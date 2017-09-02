@@ -1,3 +1,46 @@
 <resources>
     <string name="app_name">Tailor</string>
+    <string name="strEnterEmailId">Enter your Email Id</string>
+    <string name="strEnterValidEmailId">Enter valid Email Id</string>
+    <string name="strInternetNotAvaiable">Internet service is not available</string>
+    <string name="strUnableToParseData">Unable to parse data</string>
+    <string name="strServerNotResponding">Server not responding</string>
+    <string name="strRequestTimeout">Request time out</string>
+    <string name="strSessionExpire">Session has been expire</string>
+    <string name="strInvalidUserNameAndPassword">Invalid username or password</string>
+    <string name="strInvalidUserName">This email id is not registered with us!</string>
+    <string name="strDatacannotReceive">Unable to receive data from network</string>
+    <string name="strEmailIdAlreadyExists">Entered email is already registered with us.</string>
+    <string name="strServerError">Server error</string>
+    <string name="strClientError">Invalid URL request</string>
+    <string name="msgPasswordReset">Password Reset Successfully.</string>
+    <string name="strForgotPasswordQuestion">Forgot Password?</string>
+    <string name="strEmailSent">Email has been sent!</string>
+    <string name="strNoProblemItHappens">No Problem, It happens. \n\nEnter your email address below and we\'ll send new password.</string>
+    <string name="strSendNewPassword">SEND NEW PASSWORD</string>
+    <string name="msgEnterEmailNotExist">Entered email id is not exist, try again.</string>
+    <string name="msgForgotPasswordEmailConfirmation">
+  We have sent you an email with new password to your email, please follow instruction in the email to reset password.\n\n
+  <u>A note about spam filter,</u>
+  \nIf you do not get an email from us within a few minutes please be sure to check your spam filter.\nThe email will be coming from \"no-reply@jobio.io\"
+  </string>
+    <string name="strDone">Done</string>
+    <string name="strPassword">Password</string>
+    <string name="strLogin">Login</string>
+    <string name="strForgotPassword">Forgot password?</string>
+    <string name="strRegister">Register</string>
+    <string name="strRegistration">Registration</string>
+    <string name="strMeasurement">Measurement</string>
+    <string name="strProfile">Profile</string>
+    <string name="msgViewYourProfile">View your profile</string>
+    <string name="msgEditProfile">Edit Profile</string>
+    <string name="strSetting">Setting</string>
+    <string name="strChangePassword">Change password</string>
+    <string name="strLogout">Logout</string>
+    <string name="strPersonalDetail">Personal Detail</string>
+    <string name="strLoggingOut">Logging out</string>
+    <string name="strNA">NA</string>
+    <string name="strCancel">Cancel</string>
+    <string name="strSave">Save</string>
+
 </resources>

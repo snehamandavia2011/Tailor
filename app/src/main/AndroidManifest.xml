@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tailor.mafatlal.com.tailor">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".acSplash">
@@ -21,6 +22,23 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="4fe8c0108030a5d98726f6b2798f72c923049d17" />
+
+        <activity
+            android:name=".acLogin"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlack" />
+        <activity
+            android:name=".acRegistration"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlack" />
+        <activity
+            android:name=".acMeasurementOne"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlack" />
+        <activity
+            android:name=".acProfile"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlack"></activity>
     </application>
 
 </manifest>

@@ -42,10 +42,10 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
+    compile project(':libRippleDecoratorView')
     compile 'com.github.silvestrpredko:dot-progress-bar:1.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile project(':libRippleDecoratorView')
     compile 'me.zhanghai.android.materialedittext:library:1.0.5'
     compile 'com.androidadvance:topsnackbar:1.1.1'
     testCompile 'junit:junit:4.12'
