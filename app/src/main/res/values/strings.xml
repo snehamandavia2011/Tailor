@@ -42,5 +42,18 @@
     <string name="strNA">NA</string>
     <string name="strCancel">Cancel</string>
     <string name="strSave">Save</string>
+    <string name="msgEnterFirstName">Enter first name</string>
+    <string name="msgEnterLastName">Enter last name</string>
+    <string name="msgEnterPassword">Enter password</string>
+    <string name="strFirstName">First Name</string>
+    <string name="strLastName">Last Name</string>
+    <string name="strBirthDate">Birth date</string>
+    <string name="strMobileNumber">Mobile Number</string>
+    <string name="strGender">Gender</string>
+    <string name="strMale">Male</string>
+    <string name="strFemale">Female</string>
+    <string name="msgSelectBirthDate">Select your birth date.</string>
+    <string name="msgEnterMobileNumber">Enter mobile number</string>
+    <string name="msgPasswordSend">Registration done. Password has been sent to your email address.</string>
 
 </resources>

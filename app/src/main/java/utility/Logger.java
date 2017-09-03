@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Logger {
     public static void debug(String msg) {
-        Log.d("Glamour", msg);
+        Log.d("Tailor", msg);
     }
 
     public static void writeToCrashlytics(String msg) {

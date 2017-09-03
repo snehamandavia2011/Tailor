@@ -14,6 +14,9 @@ import utility.Logger;
 public class User {
     private String id, user_name, password, employee_id, admin_usertype_id, user_type_name, first_name, last_name, contact_no, email, gender, birth_date, photo, token;
 
+    public User() {
+    }
+
     public User(String id, String user_name, String password, String employee_id, String admin_usertype_id, String user_type_name, String first_name, String last_name, String contact_no, String email, String gender, String birth_date, String photo, String token) {
         this.id = id;
         this.user_name = user_name;

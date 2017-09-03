@@ -32,9 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:paddingBottom="@dimen/padding"
-        android:paddingLeft="@dimen/padding"
-        android:paddingRight="@dimen/padding">
+        android:padding="@dimen/padding">
 
         <LinearLayout
             android:id="@+id/lyBottom"
@@ -95,7 +93,120 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical">
+
+                <me.zhanghai.android.materialedittext.MaterialTextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <me.zhanghai.android.materialedittext.MaterialEditText
+                        android:id="@+id/edFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/strFirstName"
+                        android:inputType="text"
+                        android:maxLength="50" />
+                </me.zhanghai.android.materialedittext.MaterialTextInputLayout>
+
+                <me.zhanghai.android.materialedittext.MaterialTextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <me.zhanghai.android.materialedittext.MaterialEditText
+                        android:id="@+id/edLastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/strLastName"
+                        android:inputType="text"
+                        android:maxLength="50" />
+                </me.zhanghai.android.materialedittext.MaterialTextInputLayout>
+
+                <me.zhanghai.android.materialedittext.MaterialTextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin">
+
+                    <me.zhanghai.android.materialedittext.MaterialEditText
+                        android:id="@+id/edEmailId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/strEnterEmailId"
+                        android:inputType="textEmailAddress" />
+                </me.zhanghai.android.materialedittext.MaterialTextInputLayout>
+
+                <me.zhanghai.android.materialedittext.MaterialTextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin">
+
+                    <me.zhanghai.android.materialedittext.MaterialEditText
+                        android:id="@+id/edMobileNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/strMobileNumber"
+                        android:inputType="phone"
+                        android:maxLength="13" />
+                </me.zhanghai.android.materialedittext.MaterialTextInputLayout>
+
+                <TextView
+                    style="@style/stySubTitleBlackSingleLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin"
+                    android:text="@string/strGender" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rdMale"
+                        style="@style/stySmallBlack"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/strMale" />
+
+                    <RadioButton
+                        android:id="@+id/rdFemale"
+                        style="@style/stySmallBlack"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/strFemale" />
+                </RadioGroup>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin">
+
+                    <me.zhanghai.android.materialedittext.MaterialTextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <me.zhanghai.android.materialedittext.MaterialEditText
+                            android:id="@+id/edBirthDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:hint="@string/strBirthDate"
+                            android:inputType="text"
+                            android:maxLength="50" />
+                    </me.zhanghai.android.materialedittext.MaterialTextInputLayout>
+
+                    <Button
+                        android:id="@+id/btnPickDate"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/ic_calender" />
+                </RelativeLayout>
+            </LinearLayout>
         </ScrollView>
     </RelativeLayout>
 </LinearLayout>

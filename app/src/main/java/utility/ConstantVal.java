@@ -9,6 +9,12 @@ import tailor.mafatlal.com.tailor.R;
  */
 
 public class ConstantVal {
+
+    public static class Gender {
+        public static final String MALE = "Male";
+        public static final String FEMALE = "Female";
+    }
+
     public static class ToastBGColor {
         public static final int SUCCESS = R.color.Success;
         public static final int INFO = R.color.info;
@@ -69,10 +75,33 @@ public class ConstantVal {
         return "http://45.249.111.13/~glamourapp/mWebApi/v1/";
     }
 
-    public static URLMapping customerCredentialVerification() {
+    public static URLMapping employeeCredentialVerification() {
         String[] paramNames = {"email_id", "password", "android_id", "deviceName", "deviceVersion", "date", "time"};
-        String URL = getWebURLPrefix() + "Credentialsmanager/customerCredentialVerification";
+        String URL = getWebURLPrefix() + "Credentialsmanager/employeeCredentialVerification";
         return new URLMapping(paramNames, URL);
     }
 
+    public static URLMapping resetPasswordForEmployee() {
+        String[] paramNames = {"to_email", "date", "time"};
+        String URL = getWebURLPrefix() + "Emailmanager/resetPasswordForEmployee";
+        return new URLMapping(paramNames, URL);
+    }
+
+    public static URLMapping registerEmployee() {
+        String[] paramNames = {"firstName", "lastName", "emailId", "mobileNumber", "gender", "birthDate", "photo", "date", "time"};
+        String URL = getWebURLPrefix() + "Credentialsmanager/registerEmployee";
+        return new URLMapping(paramNames, URL);
+    }
+
+    public static URLMapping changePasswordForTailor() {
+        String[] paramNames = {"emailId", "new_password", "token"};
+        String URL = getWebURLPrefix() + "Credentialsmanager/changePasswordForTailor";
+        return new URLMapping(paramNames, URL);
+    }
+
+    public static URLMapping logoutUser() {
+        String[] paramNames = {"userID", "token"};
+        String URL = getWebURLPrefix() + "Credentialsmanager/logoutUser";
+        return new URLMapping(paramNames, URL);
+    }
 }
