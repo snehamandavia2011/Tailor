@@ -43,6 +43,10 @@
         <activity
             android:name=".acViewProfile"
             android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlack" />
+        <activity
+            android:name=".acMeasurementTwo"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeBlack"></activity>
     </application>
 

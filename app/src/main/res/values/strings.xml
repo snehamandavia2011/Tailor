@@ -65,5 +65,13 @@
     <string name="strEmailId">Email Id</string>
     <string name="strUserType">User type</string>
     <string name="strConfirmPassword">Confirm Password</string>
-
+    <string name="strSchoolAndCLass">School &amp; Class</string>
+    <string name="strSchoolName">School name</string>
+    <string name="msgEnterSchoolName">Enter school name</string>
+    <string name="strClass">Class</string>
+    <string name="msgClass">Enter class</string>
+    <string name="strAgeGroup">Age group</string>
+    <string name="msgSelectAgeGroup">Select age group</string>
+    <string name="strNext">Next</string>
+    <string name="strAddStudent">Add Student</string>
 </resources>

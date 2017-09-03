@@ -1,10 +1,14 @@
 package entity;
 
+import android.content.Context;
+import android.database.Cursor;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import utility.DataBase;
 import utility.Logger;
 
 /**
@@ -62,5 +66,53 @@ public class AgeGroup {
             Logger.writeToCrashlytics(e);
             return null;
         }
+    }
+
+    public static AgeGroup getDataFromDatabase(Context mContext, int intAgeGroup) {
+        DataBase db = new DataBase(mContext);
+        db.open();
+        Cursor cur = db.fetch(DataBase.age_group, DataBase.age_group_int, "id=" + intAgeGroup);
+        try {
+            if (cur != null && cur.getCount() > 0) {
+                cur.moveToFirst();
+                AgeGroup obj = new AgeGroup(cur.getInt(1), cur.getInt(2), cur.getInt(3));
+                return obj;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            cur.close();
+            db.close();
+        }
+        return null;
+    }
+
+    public static ArrayList<AgeGroup> getDataFromDatabase(Context mContext) {
+        DataBase db = new DataBase(mContext);
+        db.open();
+        Cursor cur = db.fetchAll(DataBase.age_group, DataBase.age_group_int);
+        ArrayList<AgeGroup> arrAgeGroup = null;
+        try {
+            if (cur != null && cur.getCount() > 0) {
+                arrAgeGroup = new ArrayList<>();
+                cur.moveToFirst();
+                do {
+                    AgeGroup obj = new AgeGroup(cur.getInt(1), cur.getInt(2), cur.getInt(3));
+                    arrAgeGroup.add(obj);
+                } while (cur.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.writeToCrashlytics(e);
+        } finally {
+            cur.close();
+            db.close();
+            return arrAgeGroup;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return this.from_age + " - " + this.to_age;
     }
 }

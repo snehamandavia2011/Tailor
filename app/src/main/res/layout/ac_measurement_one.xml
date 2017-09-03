@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rdv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -20,11 +21,105 @@
             <include layout="@layout/bottom_menu" />
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/tab"
-            android:background="@color/white"></RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/padding">
+
+            <me.zhanghai.android.materialedittext.MaterialTextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin">
+
+                <me.zhanghai.android.materialedittext.MaterialEditText
+                    android:id="@+id/edSchoolName"
+                    style="@style/singlelineeditTextWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/msgEnterSchoolName"
+                    android:maxLength="50" />
+            </me.zhanghai.android.materialedittext.MaterialTextInputLayout>
+
+            <me.zhanghai.android.materialedittext.MaterialTextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin">
+
+                <me.zhanghai.android.materialedittext.MaterialEditText
+                    android:id="@+id/edClass"
+                    style="@style/singlelineeditTextWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/msgClass"
+                    android:maxLength="5" />
+            </me.zhanghai.android.materialedittext.MaterialTextInputLayout>
+
+            <TextView
+                style="@style/stySubTitleBlackSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin"
+                android:text="@string/msgSelectAgeGroup" />
+
+            <com.thomsonreuters.rippledecoratorview.RippleDecoratorView xmlns:rdv="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spinnerHeight"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/margin"
+                android:layout_weight="1"
+                android:background="@drawable/bg_spinner"
+                rdv:rdv_rippleAnimationDuration="600"
+                rdv:rdv_rippleAnimationFrames="60"
+                rdv:rdv_rippleAnimationPeakFrame="15"
+                rdv:rdv_rippleColor="@color/red"
+                rdv:rdv_rippleMaxAlpha="0.8"
+                rdv:rdv_rippleRadius="@dimen/rippleRadius">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spinnerHeight">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/margin"
+                        android:background="@drawable/ic_drop_down" />
+
+                    <Spinner
+                        android:id="@+id/spnAgeGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spinnerHeight"
+                        android:background="@null"
+                        android:prompt="@string/strAgeGroup"
+                        android:spinnerMode="dialog" />
+                </RelativeLayout>
+            </com.thomsonreuters.rippledecoratorview.RippleDecoratorView>
+
+            <com.thomsonreuters.rippledecoratorview.RippleDecoratorView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="@dimen/margin"
+                rdv:rdv_rippleAnimationDuration="600"
+                rdv:rdv_rippleAnimationFrames="60"
+                rdv:rdv_rippleAnimationPeakFrame="15"
+                rdv:rdv_rippleColor="@color/white"
+                rdv:rdv_rippleMaxAlpha="0.8"
+                rdv:rdv_rippleRadius="@dimen/rippleRadius">
+
+                <Button
+                    android:id="@+id/btnNext"
+                    style="@style/btnRed"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/buttonHeight"
+                    android:text="@string/strNext" />
+            </com.thomsonreuters.rippledecoratorview.RippleDecoratorView>
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
 
