@@ -14,6 +14,19 @@ import utility.Logger;
 public class User {
     private String id, user_name, password, employee_id, admin_usertype_id, user_type_name, first_name, last_name, contact_no, email, gender, birth_date, photo, token;
 
+    public User(String emailId, String password) {
+        this.email = emailId;
+        this.password = password;
+    }
+
+    public User(String first_name, String last_name, String contact_no, String gender, String birth_date) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.contact_no = contact_no;
+        this.gender = gender;
+        this.birth_date = birth_date;
+    }
+
     public User() {
     }
 
@@ -84,6 +97,20 @@ public class User {
         Helper.setStringPreference(c, Fields.PHOTO, this.getPhoto());
         Helper.setStringPreference(c, Fields.TOKEN, this.getToken());
     }
+
+    public void savePersonalDetailToPreference(Context c) {
+        Helper.setStringPreference(c, Fields.FIRST_NAME, this.getFirst_name());
+        Helper.setStringPreference(c, Fields.LAST_NAME, this.getLast_name());
+        Helper.setStringPreference(c, Fields.CONTACT_NO, this.getContact_no());
+        Helper.setStringPreference(c, Fields.GENDER, this.getGender());
+        Helper.setStringPreference(c, Fields.BIRTH_DATE, this.getBirth_date());
+    }
+
+
+    public void savePasswordDetailToPreference(Context c) {
+        Helper.setStringPreference(c, Fields.PASSWORD, this.getPassword());
+    }
+
 
     public void parseJSON(JSONObject objJSON) {
         try {

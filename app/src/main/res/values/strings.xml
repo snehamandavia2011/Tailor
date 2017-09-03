@@ -55,5 +55,15 @@
     <string name="msgSelectBirthDate">Select your birth date.</string>
     <string name="msgEnterMobileNumber">Enter mobile number</string>
     <string name="msgPasswordSend">Registration done. Password has been sent to your email address.</string>
+    <string name="strEnterOldPassword">Enter old password</string>
+    <string name="strEnterNewPassword">Enter new password</string>
+    <string name="msgInvalidOldPassword">Invalid old password</string>
+    <string name="msgLogoutConfirmation">Are you sure you want to logout?</string>
+    <string name="msgEnterConfirmPassword">Confirm your password</string>
+    <string name="msgPasswordConfirmShouldSame">Password and confirm password should same.</string>
+    <string name="strName">Name</string>
+    <string name="strEmailId">Email Id</string>
+    <string name="strUserType">User type</string>
+    <string name="strConfirmPassword">Confirm Password</string>
 
 </resources>

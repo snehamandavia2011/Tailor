@@ -104,4 +104,16 @@ public class ConstantVal {
         String URL = getWebURLPrefix() + "Credentialsmanager/logoutUser";
         return new URLMapping(paramNames, URL);
     }
+
+    public static URLMapping changeEmployeePassword() {
+        String[] paramNames = {"emailId", "new_password", "token"};
+        String URL = getWebURLPrefix() + "Credentialsmanager/changeEmployeePassword";
+        return new URLMapping(paramNames, URL);
+    }
+
+    public static URLMapping updateEmployeePersonalInfo() {
+        String[] paramNames = {"empId","firstName", "lastName", "mobileNumber", "gender","birthDate", "token"};
+        String URL = getWebURLPrefix() + "Credentialsmanager/updateEmployeePersonalInfo";
+        return new URLMapping(paramNames, URL);
+    }
 }

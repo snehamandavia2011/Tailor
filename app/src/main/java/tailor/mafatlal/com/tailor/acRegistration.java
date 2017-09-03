@@ -96,7 +96,7 @@ public class acRegistration extends AppCompatActivity implements View.OnClickLis
                 calBirthDate.set(Calendar.YEAR, year);
                 calBirthDate.set(Calendar.MONTH, month);
                 calBirthDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                edBirthDate.setText(DateTimeUtils.getDate(calBirthDate.getTime()));
+                edBirthDate.setText(DateTimeUtils.convertDateToString(calBirthDate.getTime(), DateTimeUtils.DATE_FORMAT1));
             }
         }, calBirthDate.get(Calendar.YEAR), calBirthDate.get(Calendar.MONTH), calBirthDate.get(Calendar.DAY_OF_MONTH));
         dp.show();

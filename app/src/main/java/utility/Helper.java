@@ -214,13 +214,6 @@ public class Helper {
         return snackbar;
     }
 
-    public static void clearOnCloseApp(Context mContext) {
-        /*DataBase db = new DataBase(mContext);
-        db.open();
-        db.cleanWhileCloseApp();
-        db.close();*/
-    }
-
     public static Bitmap convertBase64ImageToBitmap(String strBase64) {
         try {
             byte[] decodedString = Base64.decode(strBase64.getBytes(), Base64.DEFAULT);

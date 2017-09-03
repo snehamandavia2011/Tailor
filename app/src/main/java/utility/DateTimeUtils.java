@@ -14,6 +14,7 @@ import java.util.Date;
 public class DateTimeUtils {
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String TIME_FORMAT = "HH:mm:ss";
+    public static final String DATE_FORMAT1 = "dd MMM,yyyy";
 
     public static String getDate(Date date) {
         return convertDateToString(date, DATE_FORMAT);
