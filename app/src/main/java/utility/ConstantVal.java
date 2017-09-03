@@ -116,4 +116,28 @@ public class ConstantVal {
         String URL = getWebURLPrefix() + "Credentialsmanager/updateEmployeePersonalInfo";
         return new URLMapping(paramNames, URL);
     }
+
+    public static URLMapping getAgeGroup() {
+        String[] paramNames = {"token"};
+        String URL = getWebURLPrefix() + "Measurementmanager/getAgeGroup";
+        return new URLMapping(paramNames, URL);
+    }
+
+    public static URLMapping getMeasurementType() {
+        String[] paramNames = {"token"};
+        String URL = getWebURLPrefix() + "Measurementmanager/getMeasurementType";
+        return new URLMapping(paramNames, URL);
+    }
+
+    public static URLMapping getCategoryMeasurementRelation() {
+        String[] paramNames = {"token"};
+        String URL = getWebURLPrefix() + "Measurementmanager/getCategoryMeasurementRelation";
+        return new URLMapping(paramNames, URL);
+    }
+
+    public static URLMapping getCategory() {
+        String[] paramNames = {"token"};
+        String URL = getWebURLPrefix() + "Measurementmanager/getCategory";
+        return new URLMapping(paramNames, URL);
+    }
 }

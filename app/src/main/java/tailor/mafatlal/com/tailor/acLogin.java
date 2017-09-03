@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
+import asyncTask.loadData;
 import entity.User;
 import me.zhanghai.android.materialedittext.MaterialEditText;
 import utility.ConstantVal;
@@ -123,6 +124,7 @@ public class acLogin extends AppCompatActivity implements View.OnClickListener {
                                 objUser.saveFieldsToPreferences(mContext);
                                 try {
                                     //load data after successful login
+                                    new loadData(mContext);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Logger.writeToCrashlytics(e);

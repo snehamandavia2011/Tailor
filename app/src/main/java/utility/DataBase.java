@@ -19,12 +19,18 @@ public class DataBase {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            //db.execSQL(TABLE_0_CREATE);
+            db.execSQL(TABLE_0_CREATE);
+            db.execSQL(TABLE_1_CREATE);
+            db.execSQL(TABLE_2_CREATE);
+            db.execSQL(TABLE_3_CREATE);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            //db.execSQL("DROP TABLE IF EXISTS " + category_master);
+            db.execSQL("DROP TABLE IF EXISTS " + age_group);
+            db.execSQL("DROP TABLE IF EXISTS " + measurement_type);
+            db.execSQL("DROP TABLE IF EXISTS " + category_measurement_relation);
+            db.execSQL("DROP TABLE IF EXISTS " + category_master);
             onCreate(db);
         }
     }
@@ -34,9 +40,39 @@ public class DataBase {
     private Context HCtx = null;
     private static final String DATABASE_NAME = "dbTailor";
     private static final int DATABASE_VERSION = 1;
+    public static final String age_group = "age_group";
+    public static final int age_group_int = 0;
+    public static final String measurement_type = "measurement_type";
+    public static final int measurement_type_int = 1;
+    public static final String category_measurement_relation = "category_measurement_relation";
+    public static final int category_measurement_relation_int = 2;
+    public static final String category_master = "category_master";
+    public static final int category_master_int = 3;
 
-    String[][] tables = new String[][]{};
+    String[][] tables = new String[][]{{"_ID", "id", "from_age", "to_age"},
+            {"_ID", "id", "type_name"},
+            {"_ID", "id", "category_id", "measurement_type_id", "size_id", "size", "measurement_value"},
+            {"_ID", "id", "parent_id", "category_name", "category_description", "category_for", "image"}};
 
+    private static final String TABLE_0_CREATE = "create table "
+            + age_group
+            + "(_ID integer primary key autoincrement,"
+            + "id text not null,from_age text not null, to_age text not null);";
+
+    private static final String TABLE_1_CREATE = "create table "
+            + measurement_type
+            + "(_ID integer primary key autoincrement,"
+            + "id text not null,type_name text not null);";
+
+    private static final String TABLE_2_CREATE = "create table "
+            + category_measurement_relation
+            + "(_ID integer primary key autoincrement,id text not null,category_id text not null,measurement_type_id text not null,"
+            + "size_id text not null,size text not null,measurement_value text not null);";
+
+    private static final String TABLE_3_CREATE = "create table "
+            + category_master
+            + "(_ID integer primary key autoincrement,id text not null,parent_id text not null,category_name text not null,"
+            + "category_description text not null,category_for text not null,image text not null);";
 
     public DataBase(Context ctx) {
         HCtx = ctx;
@@ -49,12 +85,26 @@ public class DataBase {
     }
 
     public void cleanWhileLogout() {
-
+        sqLiteDb.delete(age_group, null, null);
+        sqLiteDb.delete(measurement_type, null, null);
+        sqLiteDb.delete(category_measurement_relation, null, null);
+        sqLiteDb.delete(category_master, null, null);
     }
 
     public void cleanTable(int tableNo) {
         switch (tableNo) {
-
+            case age_group_int:
+                sqLiteDb.delete(age_group, null, null);
+                break;
+            case measurement_type_int:
+                sqLiteDb.delete(measurement_type, null, null);
+                break;
+            case category_measurement_relation_int:
+                sqLiteDb.delete(category_measurement_relation, null, null);
+                break;
+            case category_master_int:
+                sqLiteDb.delete(category_master, null, null);
+                break;
         }
     }
 
