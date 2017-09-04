@@ -1,6 +1,7 @@
 package tailor.mafatlal.com.tailor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,12 +9,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -30,6 +34,7 @@ import me.zhanghai.android.materialedittext.MaterialEditText;
 import me.zhanghai.android.materialedittext.MaterialTextInputLayout;
 import utility.DataBase;
 import utility.Helper;
+import utility.InputFilterMinMax;
 import utility.Logger;
 import utility.TabManager;
 
@@ -47,6 +52,10 @@ public class acMeasurementThree extends AppCompatActivity {
     Spinner spnCategory;
     MaterialEditText edRollNumber, edStudentFirstName, edStudentLastName;
     RelativeLayout lySizeCalculationScreen, lyMainScreen;
+    public static final String STUDENT_FIRST_NAME = "stud_first_name";
+    public static final String STUDENT_LAST_NAME = "stud_last_name";
+    public static final String STUDENT_ROLL_NUMBER = "stud_roll_number";
+    public static final String CATEGORY_MASTER = "selected_category";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,14 +126,64 @@ public class acMeasurementThree extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             new AsyncTask() {
+                boolean isDataEnteredProper = true;
+
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
+                    if (Helper.isFieldBlank(edStudentFirstName.getText().toString())) {
+                        isDataEnteredProper = false;
+                        edStudentFirstName.setError(getString(R.string.msgEnterFirstName));
+                        Helper.requestFocus(ac, edStudentFirstName);
+                    } else if (Helper.isFieldBlank(edStudentLastName.getText().toString())) {
+                        isDataEnteredProper = false;
+                        edStudentLastName.setError(getString(R.string.msgEnterLastName));
+                        Helper.requestFocus(ac, edStudentLastName);
+                    } else if (Helper.isFieldBlank(edRollNumber.getText().toString())) {
+                        isDataEnteredProper = false;
+                        edRollNumber.setError(getString(R.string.msgEnterRollNumber));
+                        Helper.requestFocus(ac, edRollNumber);
+                    }
+                    for (int i = lyMeasurementParameter.getChildCount() - 1; i >= 0; i--) {
+                        MaterialTextInputLayout lyed = (MaterialTextInputLayout) lyMeasurementParameter.getChildAt(i);
+                        MaterialEditText ed = (MaterialEditText) ((FrameLayout) lyed.getChildAt(0)).getChildAt(0);
+                        if (Helper.isFieldBlank(ed.getText().toString())) {
+                            isDataEnteredProper = false;
+                            ed.setError(lyed.getHint());
+                            Helper.requestFocus(ac, ed);
+                        }
+                    }
+
+                    if (isDataEnteredProper) {
+                        lyMainScreen.setVisibility(View.GONE);
+                        lySizeCalculationScreen.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override
                 protected Object doInBackground(Object[] params) {
+                    if (isDataEnteredProper) {
+
+                    }
                     return null;
+                }
+
+                @Override
+                protected void onPostExecute(Object o) {
+                    super.onPostExecute(o);
+                    lyMainScreen.setVisibility(View.VISIBLE);
+                    lySizeCalculationScreen.setVisibility(View.GONE);
+                    if (isDataEnteredProper) {
+                        Intent i = new Intent(mContext, acMeasurementFour.class);
+                        i.putExtra(acMeasurementOne.SCHOOL_MASTER, objSelectedSchoolMaster);
+                        i.putExtra(acMeasurementOne.CLASS_MASTER, objSelectedClassMaster);
+                        i.putExtra(acMeasurementOne.AGE_GROUP, objSelectedAgeGroup);
+                        i.putExtra(acMeasurementThree.STUDENT_FIRST_NAME, edStudentFirstName.getText().toString());
+                        i.putExtra(acMeasurementThree.STUDENT_LAST_NAME, edStudentLastName.getText().toString());
+                        i.putExtra(acMeasurementThree.STUDENT_ROLL_NUMBER, edRollNumber.getText().toString());
+                        i.putExtra(acMeasurementThree.CATEGORY_MASTER, (Category) spnCategory.getSelectedItem());
+                        startActivity(i);
+                    }
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
@@ -175,6 +234,10 @@ public class acMeasurementThree extends AppCompatActivity {
             ed.setLayoutParams(edParam);
             lyed.setLayoutParams(edParam);
             ed.setTextAppearance(mContext, R.style.stySubTitleBlackSingleLine);
+            ed.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+            InputFilterMinMax filter = new InputFilterMinMax((double) 0, (double) 1000);
+            ed.setFilters(new InputFilter[]{filter});
+
             lyed.setHint(obj.getType_name());
             ed.setTag(obj.getMeasurement_type_id());
             lyed.addView(ed);

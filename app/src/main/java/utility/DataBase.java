@@ -25,6 +25,7 @@ public class DataBase {
             db.execSQL(TABLE_3_CREATE);
             db.execSQL(TABLE_4_CREATE);
             db.execSQL(TABLE_5_CREATE);
+            db.execSQL(TABLE_6_CREATE);
         }
 
         @Override
@@ -35,6 +36,7 @@ public class DataBase {
             db.execSQL("DROP TABLE IF EXISTS " + category_master);
             db.execSQL("DROP TABLE IF EXISTS " + school_master);
             db.execSQL("DROP TABLE IF EXISTS " + class_master);
+            db.execSQL("DROP TABLE IF EXISTS " + student_measurement);
             onCreate(db);
         }
     }
@@ -56,13 +58,16 @@ public class DataBase {
     public static final int school_master_int = 4;
     public static final String class_master = "class_master";
     public static final int class_master_int = 5;
+    public static final String student_measurement = "student_measurement";
+    public static final int student_measurement_int = 6;
 
     String[][] tables = new String[][]{{"_ID", "id", "from_age", "to_age"},
             {"_ID", "id", "type_name"},
             {"_ID", "id", "category_id", "measurement_type_id", "size_id", "size", "measurement_value"},
             {"_ID", "id", "parent_id", "category_name", "category_description", "category_for", "image"},
             {"_ID", "id", "school_name", "address", "contact_no", "email"},
-            {"_ID", "id", "class_name"}};
+            {"_ID", "id", "class_name"},
+            {"_ID", "serverPK", "studFirstName", "studLastName", "studRollNumber", "school_id", "class_id", "age_group_id", "size_id", "category_id", "measurement_type_id", "default_value", "is_successfully_submitted", "employee_id", "datetime"}};
 
     private static final String TABLE_0_CREATE = "create table "
             + age_group
@@ -93,6 +98,13 @@ public class DataBase {
             + class_master
             + "(_ID integer primary key autoincrement,id text not null,class_name text not null);";
 
+    private static final String TABLE_6_CREATE = "create table "
+            + student_measurement
+            + "(_ID integer primary key autoincrement,serverPK text not null,studFirstName text not null," +
+            "studLastName text not null,studRollNumber text not null,school_id text not null,class_id text not null," +
+            "age_group_id text not null,size_id text not null,category_id text not null,measurement_type_id text not null," +
+            "default_value text not null,is_successfully_submitted text not null,employee_id text not null,datetime text not null);";
+
     public DataBase(Context ctx) {
         HCtx = ctx;
     }
@@ -110,6 +122,7 @@ public class DataBase {
         sqLiteDb.delete(category_master, null, null);
         sqLiteDb.delete(school_master, null, null);
         sqLiteDb.delete(class_master, null, null);
+        sqLiteDb.delete(student_measurement, "is_successfully_submitted='Y'", null);
     }
 
     public void cleanTable(int tableNo) {
@@ -132,7 +145,9 @@ public class DataBase {
             case class_master_int:
                 sqLiteDb.delete(class_master, null, null);
                 break;
-
+            case student_measurement_int:
+                sqLiteDb.delete(student_measurement, null, null);
+                break;
         }
     }
 

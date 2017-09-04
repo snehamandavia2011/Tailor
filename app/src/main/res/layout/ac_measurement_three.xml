@@ -76,7 +76,7 @@
 
                             <me.zhanghai.android.materialedittext.MaterialEditText
                                 android:id="@+id/edStudentFirstName"
-                                style="@style/singlelineeditTextWhite"
+                                style="@style/singlelineeditText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/strStudentFirstName"
@@ -91,7 +91,7 @@
 
                             <me.zhanghai.android.materialedittext.MaterialEditText
                                 android:id="@+id/edStudentLastName"
-                                style="@style/singlelineeditTextWhite"
+                                style="@style/singlelineeditText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/strStudentLastName"
@@ -106,7 +106,7 @@
 
                         <me.zhanghai.android.materialedittext.MaterialEditText
                             android:id="@+id/edRollNumber"
-                            style="@style/singlelineeditTextWhite"
+                            style="@style/singlelineeditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/msgEnterRollNumber"

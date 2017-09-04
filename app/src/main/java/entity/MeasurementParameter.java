@@ -1,10 +1,12 @@
 package entity;
 
+import java.io.Serializable;
+
 /**
  * Created by SAI on 9/4/2017.
  */
 
-public class MeasurementParameter {
+public class MeasurementParameter implements Serializable{
     private  int measurement_type_id,category_id;
     private String type_name;
 

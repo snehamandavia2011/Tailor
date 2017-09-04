@@ -6,6 +6,7 @@ import android.database.Cursor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import utility.DataBase;
@@ -15,7 +16,7 @@ import utility.Logger;
  * Created by SAI on 9/3/2017.
  */
 
-public class Category {
+public class Category implements Serializable{
     private int id, parent_id;
     private String category_name, category_description, category_for, image;
 
