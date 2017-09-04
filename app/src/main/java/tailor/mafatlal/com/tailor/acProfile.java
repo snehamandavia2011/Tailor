@@ -353,7 +353,7 @@ public class acProfile extends AppCompatActivity implements View.OnClickListener
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                if (sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SUCCESS)) {
+                if (sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SUCCESS) || sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SESSION_EXPIRED)) {
                     logOutUser();
                 } else {
                     Helper.displaySnackbar(ac, ConstantVal.ServerResponseCode.getMessage(mContext, sr.getResponseCode()), ConstantVal.ToastBGColor.INFO);

@@ -1,10 +1,14 @@
 package entity;
 
+import android.content.Context;
+import android.database.Cursor;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import utility.DataBase;
 import utility.Logger;
 
 /**
@@ -93,5 +97,35 @@ public class Category {
             Logger.writeToCrashlytics(e);
             return null;
         }
+    }
+
+
+    public static ArrayList<Category> getDataFromDatabase(Context mContext) {
+        DataBase db = new DataBase(mContext);
+        db.open();
+        Cursor cur = db.fetchAll(DataBase.category_master, DataBase.category_master_int);
+        ArrayList<Category> arrCategory = null;
+        try {
+            arrCategory = new ArrayList<>();
+            if (cur != null && cur.getCount() > 0) {
+                cur.moveToFirst();
+                do {
+                    Category obj = new Category(cur.getInt(1), cur.getInt(2), cur.getString(3), cur.getString(4), cur.getString(5), cur.getString(6));
+                    arrCategory.add(obj);
+                } while (cur.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.writeToCrashlytics(e);
+        } finally {
+            cur.close();
+            db.close();
+            return arrCategory;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return this.getCategory_name();
     }
 }

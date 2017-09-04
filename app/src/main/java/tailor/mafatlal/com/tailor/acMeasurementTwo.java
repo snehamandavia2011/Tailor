@@ -1,6 +1,7 @@
 package tailor.mafatlal.com.tailor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import entity.AgeGroup;
+import entity.ClassMaster;
+import entity.SchoolMaster;
 import utility.Helper;
 import utility.TabManager;
 
@@ -27,8 +30,10 @@ public class acMeasurementTwo extends AppCompatActivity {
     FloatingActionButton btnAddItem;
     RelativeLayout lySchoolAndClassDetailChild, lylySchoolAndClassDetailParent;
     TextView txtSchoolName, txtClass, txtAgegroup;
-    String strSchoolName, strClass, strAgeGroup;
-    int intAgeGroup;
+    SchoolMaster objSelectedSchoolMaster;
+    ClassMaster objSelectedClassMaster;
+    AgeGroup objSelectedAgeGroup;
+
     ImageButton btnEdit;
 
     @Override
@@ -57,9 +62,9 @@ public class acMeasurementTwo extends AppCompatActivity {
                 lySchoolAndClassDetailChild = (RelativeLayout) findViewById(R.id.lySchoolAndClassDetailChild);
                 lylySchoolAndClassDetailParent = (RelativeLayout) findViewById(R.id.lylySchoolAndClassDetailParent);
                 if (ac.getIntent().getExtras() != null) {
-                    strSchoolName = ac.getIntent().getStringExtra(acMeasurementOne.SCHOOL_NAME);
-                    strClass = ac.getIntent().getStringExtra(acMeasurementOne.CLASS);
-                    intAgeGroup = ac.getIntent().getIntExtra(acMeasurementOne.AGE_GROUP, 0);
+                    objSelectedSchoolMaster = (SchoolMaster) ac.getIntent().getSerializableExtra(acMeasurementOne.SCHOOL_MASTER);
+                    objSelectedClassMaster = (ClassMaster) ac.getIntent().getSerializableExtra(acMeasurementOne.CLASS_MASTER);
+                    objSelectedAgeGroup = (AgeGroup) ac.getIntent().getSerializableExtra(acMeasurementOne.AGE_GROUP);
                 }
                 btnEdit.setOnClickListener(performClick);
                 btnAddItem.setOnClickListener(performClick);
@@ -67,21 +72,16 @@ public class acMeasurementTwo extends AppCompatActivity {
 
             @Override
             protected Object doInBackground(Object[] params) {
-                AgeGroup objAgeGroup = AgeGroup.getDataFromDatabase(mContext, intAgeGroup);
-                if (objAgeGroup != null) {
-                    strAgeGroup = objAgeGroup.toString();
-                }
                 return null;
             }
 
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                txtClass.setText(mContext.getString(R.string.strClass) + ": " + strClass);
-                txtSchoolName.setText(strSchoolName);
-                if (strAgeGroup != null) {
-                    txtAgegroup.setText(mContext.getString(R.string.strAgeGroup) + ": " + strAgeGroup);
-                }
+                txtClass.setText(mContext.getString(R.string.strClass) + ": " + objSelectedClassMaster.getClass_name());
+                txtSchoolName.setText(objSelectedSchoolMaster.getSchool_name());
+                txtAgegroup.setText(mContext.getString(R.string.strAgeGroup) + ": " + objSelectedAgeGroup.toString());
+
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -91,6 +91,11 @@ public class acMeasurementTwo extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnAddItem:
+                    Intent i = new Intent(mContext, acMeasurementThree.class);
+                    i.putExtra(acMeasurementOne.SCHOOL_MASTER, objSelectedSchoolMaster);
+                    i.putExtra(acMeasurementOne.CLASS_MASTER, objSelectedClassMaster);
+                    i.putExtra(acMeasurementOne.AGE_GROUP, objSelectedAgeGroup);
+                    startActivity(i);
                     break;
                 case R.id.btnEdit:
                     finish();

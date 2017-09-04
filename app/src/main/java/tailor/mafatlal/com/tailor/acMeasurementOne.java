@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 
 import entity.AgeGroup;
+import entity.ClassMaster;
+import entity.SchoolMaster;
 import me.zhanghai.android.materialedittext.MaterialEditText;
 import utility.Helper;
 import utility.TabManager;
@@ -27,12 +29,11 @@ public class acMeasurementOne extends AppCompatActivity {
     Context mContext;
     AppCompatActivity ac;
     TabManager objTabManager;
-    MaterialEditText edSchoolName, edClass;
-    Spinner spnAgeGroup;
+    Spinner spnAgeGroup, spnClassName, spnSchoolName;
     Button btnNext;
-    public static final String SCHOOL_NAME = "school_name";
-    public static final String CLASS = "class";
-    public static final String AGE_GROUP = "age_group_id";
+    public static final String SCHOOL_MASTER = "school_master";
+    public static final String CLASS_MASTER = "class_master";
+    public static final String AGE_GROUP = "age_group";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +51,14 @@ public class acMeasurementOne extends AppCompatActivity {
     private void setData() {
         new AsyncTask() {
             ArrayList<AgeGroup> arrAgeGroup = null;
+            ArrayList<SchoolMaster> arrSchool = null;
+            ArrayList<ClassMaster> arrClass = null;
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                edSchoolName = (MaterialEditText) findViewById(R.id.edSchoolName);
-                edClass = (MaterialEditText) findViewById(R.id.edClass);
+                spnSchoolName = (Spinner) findViewById(R.id.spnSchoolName);
+                spnClassName = (Spinner) findViewById(R.id.spnClassName);
                 spnAgeGroup = (Spinner) findViewById(R.id.spnAgeGroup);
                 btnNext = (Button) findViewById(R.id.btnNext);
                 btnNext.setOnClickListener(clickNext);
@@ -64,16 +67,30 @@ public class acMeasurementOne extends AppCompatActivity {
             @Override
             protected Object doInBackground(Object[] params) {
                 arrAgeGroup = AgeGroup.getDataFromDatabase(mContext);
+                arrSchool = SchoolMaster.getDataFromDatabase(mContext);
+                arrClass = ClassMaster.getDataFromDatabase(mContext);
                 return null;
             }
 
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                if (arrAgeGroup != null && arrAgeGroup.size() > 0) {
+                if (arrAgeGroup != null) {
                     ArrayAdapter<AgeGroup> adpAgeGroup = new ArrayAdapter<AgeGroup>(mContext, R.layout.spinner_item_no_padding, arrAgeGroup);
                     adpAgeGroup.setDropDownViewResource(R.layout.spinner_item);
                     spnAgeGroup.setAdapter(adpAgeGroup);
+                }
+
+                if (arrSchool != null) {
+                    ArrayAdapter<SchoolMaster> adp = new ArrayAdapter<SchoolMaster>(mContext, R.layout.spinner_item_no_padding, arrSchool);
+                    adp.setDropDownViewResource(R.layout.spinner_item);
+                    spnSchoolName.setAdapter(adp);
+                }
+
+                if (arrClass != null) {
+                    ArrayAdapter<ClassMaster> adp = new ArrayAdapter<ClassMaster>(mContext, R.layout.spinner_item_no_padding, arrClass);
+                    adp.setDropDownViewResource(R.layout.spinner_item);
+                    spnClassName.setAdapter(adp);
                 }
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -89,15 +106,6 @@ public class acMeasurementOne extends AppCompatActivity {
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
-                    if (Helper.isFieldBlank(edSchoolName.getText().toString())) {
-                        isDataEnteredProper = false;
-                        edSchoolName.setError(getString(R.string.msgEnterSchoolName));
-                        Helper.requestFocus(ac, edSchoolName);
-                    } else if (Helper.isFieldBlank(edClass.getText().toString())) {
-                        isDataEnteredProper = false;
-                        edClass.setError(getString(R.string.msgClass));
-                        Helper.requestFocus(ac, edClass);
-                    }
                 }
 
                 @Override
@@ -110,9 +118,9 @@ public class acMeasurementOne extends AppCompatActivity {
                     super.onPostExecute(o);
                     if (isDataEnteredProper) {
                         Intent i = new Intent(mContext, acMeasurementTwo.class);
-                        i.putExtra(acMeasurementOne.SCHOOL_NAME, edSchoolName.getText().toString());
-                        i.putExtra(acMeasurementOne.CLASS, edClass.getText().toString());
-                        i.putExtra(acMeasurementOne.AGE_GROUP, ((AgeGroup) spnAgeGroup.getSelectedItem()).getId());
+                        i.putExtra(acMeasurementOne.SCHOOL_MASTER, (SchoolMaster) spnSchoolName.getSelectedItem());
+                        i.putExtra(acMeasurementOne.CLASS_MASTER, (ClassMaster) spnClassName.getSelectedItem());
+                        i.putExtra(acMeasurementOne.AGE_GROUP, (AgeGroup) spnAgeGroup.getSelectedItem());
                         startActivity(i);
                     }
                 }

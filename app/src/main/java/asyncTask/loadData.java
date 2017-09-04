@@ -9,7 +9,9 @@ import java.util.Date;
 import entity.AgeGroup;
 import entity.Category;
 import entity.CategoryMeasurementRelation;
+import entity.ClassMaster;
 import entity.MeasurementType;
+import entity.SchoolMaster;
 import entity.User;
 import utility.ConstantVal;
 import utility.DataBase;
@@ -33,9 +35,63 @@ public class loadData {
             getMeasurementType().join();
             getCategoryMeasurementRelation().join();
             getCategory().join();
+            getSchool().join();
+            getClassMaster().join();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Thread getClassMaster() {
+        Thread t = new Thread() {
+            public void run() {
+                final HttpEngine objHttpEngine = new HttpEngine();
+                URLMapping um = ConstantVal.getClassName();
+                ServerResponse objServerResponse = objHttpEngine.getDataFromWebAPI(mContext, um.getUrl(),
+                        um.getParamNames(), new String[]{Helper.getStringPreference(mContext, User.Fields.TOKEN, "")});
+                String result = Html.fromHtml(objServerResponse.getResponseString()).toString();
+                if (result != null && !result.equals("")) {
+                    ArrayList<ClassMaster> arrClass = ClassMaster.parseJSON(result);
+                    if (arrClass != null && arrClass.size() > 0) {
+                        DataBase db = new DataBase(mContext);
+                        db.open();
+                        for (ClassMaster obj : arrClass) {
+                            db.insert(DataBase.class_master, DataBase.class_master_int,
+                                    new String[]{String.valueOf(obj.getId()), obj.getClass_name()});
+                        }
+                        db.close();
+                    }
+                }
+            }
+        };
+        t.start();
+        return t;
+    }
+
+    public Thread getSchool() {
+        Thread t = new Thread() {
+            public void run() {
+                final HttpEngine objHttpEngine = new HttpEngine();
+                URLMapping um = ConstantVal.getSchoolName();
+                ServerResponse objServerResponse = objHttpEngine.getDataFromWebAPI(mContext, um.getUrl(),
+                        um.getParamNames(), new String[]{Helper.getStringPreference(mContext, User.Fields.TOKEN, "")});
+                String result = Html.fromHtml(objServerResponse.getResponseString()).toString();
+                if (result != null && !result.equals("")) {
+                    ArrayList<SchoolMaster> arrSchool = SchoolMaster.parseJSON(result);
+                    if (arrSchool != null && arrSchool.size() > 0) {
+                        DataBase db = new DataBase(mContext);
+                        db.open();
+                        for (SchoolMaster obj : arrSchool) {
+                            db.insert(DataBase.school_master, DataBase.school_master_int,
+                                    new String[]{String.valueOf(obj.getId()), obj.getSchool_name(), obj.getAddress(), obj.getContact_no(), obj.getEmail()});
+                        }
+                        db.close();
+                    }
+                }
+            }
+        };
+        t.start();
+        return t;
     }
 
     public Thread loadAgeGroup() {

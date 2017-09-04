@@ -6,6 +6,7 @@ import android.database.Cursor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import utility.DataBase;
@@ -15,7 +16,7 @@ import utility.Logger;
  * Created by SAI on 9/3/2017.
  */
 
-public class AgeGroup {
+public class AgeGroup implements Serializable{
     private int id, from_age, to_age;
 
     public AgeGroup(int id, int from_age, int to_age) {
@@ -93,8 +94,8 @@ public class AgeGroup {
         Cursor cur = db.fetchAll(DataBase.age_group, DataBase.age_group_int);
         ArrayList<AgeGroup> arrAgeGroup = null;
         try {
+            arrAgeGroup = new ArrayList<>();
             if (cur != null && cur.getCount() > 0) {
-                arrAgeGroup = new ArrayList<>();
                 cur.moveToFirst();
                 do {
                     AgeGroup obj = new AgeGroup(cur.getInt(1), cur.getInt(2), cur.getInt(3));

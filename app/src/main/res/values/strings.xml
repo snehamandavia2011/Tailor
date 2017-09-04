@@ -67,11 +67,20 @@
     <string name="strConfirmPassword">Confirm Password</string>
     <string name="strSchoolAndCLass">School &amp; Class</string>
     <string name="strSchoolName">School name</string>
-    <string name="msgEnterSchoolName">Enter school name</string>
-    <string name="strClass">Class</string>
+    <string name="msgEnterRollNumber">Enter roll number</string>
+    <string name="msgSelectCategory">Select category</string>
+    <string name="strCategory">Category</string>
     <string name="msgClass">Enter class</string>
     <string name="strAgeGroup">Age group</string>
     <string name="msgSelectAgeGroup">Select age group</string>
+    <string name="msgSelectSchoolName">Select school name</string>
+    <string name="msgSelectClassName">Select class name</string>
+    <string name="strClass">Class</string>
     <string name="strNext">Next</string>
     <string name="strAddStudent">Add Student</string>
+    <string name="strCalculateSize">Calculate size</string>
+    <string name="strCalculatingSize">Calculating size</string>
+    <string name="strSizeResult">Size result</string>
+    <string name="strStudentFirstName">Student first name</string>
+    <string name="strStudentLastName">Student last name</string>
 </resources>

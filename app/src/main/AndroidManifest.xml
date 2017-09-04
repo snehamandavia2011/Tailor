@@ -47,6 +47,14 @@
         <activity
             android:name=".acMeasurementTwo"
             android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlack" />
+        <activity
+            android:name=".acMeasurementThree"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlack" />
+        <activity
+            android:name=".acMeasurementFour"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeBlack"></activity>
     </application>
 

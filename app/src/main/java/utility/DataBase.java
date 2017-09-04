@@ -23,6 +23,8 @@ public class DataBase {
             db.execSQL(TABLE_1_CREATE);
             db.execSQL(TABLE_2_CREATE);
             db.execSQL(TABLE_3_CREATE);
+            db.execSQL(TABLE_4_CREATE);
+            db.execSQL(TABLE_5_CREATE);
         }
 
         @Override
@@ -31,6 +33,8 @@ public class DataBase {
             db.execSQL("DROP TABLE IF EXISTS " + measurement_type);
             db.execSQL("DROP TABLE IF EXISTS " + category_measurement_relation);
             db.execSQL("DROP TABLE IF EXISTS " + category_master);
+            db.execSQL("DROP TABLE IF EXISTS " + school_master);
+            db.execSQL("DROP TABLE IF EXISTS " + class_master);
             onCreate(db);
         }
     }
@@ -48,11 +52,17 @@ public class DataBase {
     public static final int category_measurement_relation_int = 2;
     public static final String category_master = "category_master";
     public static final int category_master_int = 3;
+    public static final String school_master = "school_master";
+    public static final int school_master_int = 4;
+    public static final String class_master = "class_master";
+    public static final int class_master_int = 5;
 
     String[][] tables = new String[][]{{"_ID", "id", "from_age", "to_age"},
             {"_ID", "id", "type_name"},
             {"_ID", "id", "category_id", "measurement_type_id", "size_id", "size", "measurement_value"},
-            {"_ID", "id", "parent_id", "category_name", "category_description", "category_for", "image"}};
+            {"_ID", "id", "parent_id", "category_name", "category_description", "category_for", "image"},
+            {"_ID", "id", "school_name", "address", "contact_no", "email"},
+            {"_ID", "id", "class_name"}};
 
     private static final String TABLE_0_CREATE = "create table "
             + age_group
@@ -74,6 +84,15 @@ public class DataBase {
             + "(_ID integer primary key autoincrement,id text not null,parent_id text not null,category_name text not null,"
             + "category_description text not null,category_for text not null,image text not null);";
 
+    private static final String TABLE_4_CREATE = "create table "
+            + school_master
+            + "(_ID integer primary key autoincrement,id text not null,school_name text not null,address text not null,"
+            + "contact_no text not null,email text not null);";
+
+    private static final String TABLE_5_CREATE = "create table "
+            + class_master
+            + "(_ID integer primary key autoincrement,id text not null,class_name text not null);";
+
     public DataBase(Context ctx) {
         HCtx = ctx;
     }
@@ -89,6 +108,8 @@ public class DataBase {
         sqLiteDb.delete(measurement_type, null, null);
         sqLiteDb.delete(category_measurement_relation, null, null);
         sqLiteDb.delete(category_master, null, null);
+        sqLiteDb.delete(school_master, null, null);
+        sqLiteDb.delete(class_master, null, null);
     }
 
     public void cleanTable(int tableNo) {
@@ -105,6 +126,13 @@ public class DataBase {
             case category_master_int:
                 sqLiteDb.delete(category_master, null, null);
                 break;
+            case school_master_int:
+                sqLiteDb.delete(school_master, null, null);
+                break;
+            case class_master_int:
+                sqLiteDb.delete(class_master, null, null);
+                break;
+
         }
     }
 
@@ -354,10 +382,10 @@ public class DataBase {
         }
     }
 
-    public synchronized Cursor fetchDistinctSupplier(String DATABASE_TABLE) {
+    public synchronized Cursor fetchDistinctMeasurementType(String DATABASE_TABLE, String where) {
         try {
             return sqLiteDb.query(DATABASE_TABLE,
-                    new String[]{"DISTINCT categoryID", "categoryName"}, null, null, null,
+                    new String[]{"DISTINCT measurement_type_id"}, where, null, null,
                     null, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -382,16 +410,6 @@ public class DataBase {
         return sqLiteDb.update(DATABASE_TABLE, cv, where, args) > 0;
     }
 
-    public boolean updatePage(String DATABASE_TABLE, int tableNo,
-                              int flashCardID, int pageno, String val) {
-        ContentValues vals = new ContentValues();
-        // for (int i = 0; i < values.length; i++)
-        // vals.put(tables[tableNo][i + 1], values[i]);
-        vals.put(tables[tableNo][3], val);
-        return sqLiteDb.update(DATABASE_TABLE, vals, " flashcardid='"
-                + flashCardID + "' and pageno='" + pageno + "'", null) > 0;
-    }
-
     public boolean update(String DATABASE_TABLE, int tableNo, long rowId,
                           int colIndex, int val) {
         ContentValues vals = new ContentValues();
@@ -406,17 +424,6 @@ public class DataBase {
         vals.put(tables[tableNo][colIndex], val);
         return sqLiteDb.update(DATABASE_TABLE, vals, tables[tableNo][0] + "="
                 + rowId, null) > 0;
-    }
-
-    public Cursor fetch(String DATABASE_TABLE, int tableNo, int i,
-                        String string, int j) {
-        Cursor ret = sqLiteDb.query(DATABASE_TABLE, tables[tableNo],
-                tables[tableNo][i] + "='" + string + "' and mediatypeid<>" + j,
-                null, null, null, null);
-        if (ret != null) {
-            ret.moveToFirst();
-        }
-        return ret;
     }
 
 }

@@ -112,7 +112,7 @@ public class ConstantVal {
     }
 
     public static URLMapping updateEmployeePersonalInfo() {
-        String[] paramNames = {"empId","firstName", "lastName", "mobileNumber", "gender","birthDate", "token"};
+        String[] paramNames = {"empId", "firstName", "lastName", "mobileNumber", "gender", "birthDate", "token"};
         String URL = getWebURLPrefix() + "Credentialsmanager/updateEmployeePersonalInfo";
         return new URLMapping(paramNames, URL);
     }
@@ -138,6 +138,18 @@ public class ConstantVal {
     public static URLMapping getCategory() {
         String[] paramNames = {"token"};
         String URL = getWebURLPrefix() + "Measurementmanager/getCategory";
+        return new URLMapping(paramNames, URL);
+    }
+
+    public static URLMapping getSchoolName() {
+        String[] paramNames = {"token"};
+        String URL = getWebURLPrefix() + "Measurementmanager/getSchoolName";
+        return new URLMapping(paramNames, URL);
+    }
+
+    public static URLMapping getClassName() {
+        String[] paramNames = {"token"};
+        String URL = getWebURLPrefix() + "Measurementmanager/getClassName";
         return new URLMapping(paramNames, URL);
     }
 }
