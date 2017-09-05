@@ -3,6 +3,7 @@ package entity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import utility.Logger;
@@ -11,7 +12,7 @@ import utility.Logger;
  * Created by SAI on 9/3/2017.
  */
 
-public class CategoryMeasurementRelation {
+public class CategoryMeasurementRelation{
     private int id, category_id, measurement_type_id, size_id;
     private String size, measurement_value;
 

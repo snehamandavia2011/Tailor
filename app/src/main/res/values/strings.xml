@@ -85,4 +85,6 @@
     <string name="strStudentLastName">Student last name</string>
     <string name="strSubmit">Submit</string>
     <string name="strSubmitting">Submitting</string>
+    <string name="strNoSizeFound">No relevant size found.</string>
+    <string name="strSize">Size</string>
 </resources>

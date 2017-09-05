@@ -28,6 +28,7 @@ import entity.AgeGroup;
 import entity.Category;
 import entity.CategoryMeasurementRelation;
 import entity.ClassMaster;
+import entity.EstimatedSize;
 import entity.MeasurementParameter;
 import entity.SchoolMaster;
 import me.zhanghai.android.materialedittext.MaterialEditText;
@@ -50,12 +51,14 @@ public class acMeasurementThree extends AppCompatActivity {
     Button btnCalculateSize;
     LinearLayout lyMeasurementParameter;
     Spinner spnCategory;
+    int selectedCategoryId;
     MaterialEditText edRollNumber, edStudentFirstName, edStudentLastName;
     RelativeLayout lySizeCalculationScreen, lyMainScreen;
     public static final String STUDENT_FIRST_NAME = "stud_first_name";
     public static final String STUDENT_LAST_NAME = "stud_last_name";
     public static final String STUDENT_ROLL_NUMBER = "stud_roll_number";
     public static final String CATEGORY_MASTER = "selected_category";
+    public static final String ESTIMATED_SIZE_LIST = "estimated_size_list";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,12 +106,13 @@ public class acMeasurementThree extends AppCompatActivity {
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
                 if (arrCategory != null && arrCategory.size() > 0) {
-                    ArrayAdapter<Category> adpCategory = new ArrayAdapter<Category>(mContext, R.layout.spinner_item_no_padding, arrCategory);
+                    final ArrayAdapter<Category> adpCategory = new ArrayAdapter<Category>(mContext, R.layout.spinner_item_no_padding, arrCategory);
                     adpCategory.setDropDownViewResource(R.layout.spinner_item);
                     spnCategory.setAdapter(adpCategory);
                     spnCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            selectedCategoryId = arrCategory.get(position).getId();
                             setMeasurementParameter(arrCategory.get(position));
                         }
 
@@ -127,6 +131,7 @@ public class acMeasurementThree extends AppCompatActivity {
         public void onClick(View v) {
             new AsyncTask() {
                 boolean isDataEnteredProper = true;
+                ArrayList<EstimatedSize> arrEstimatedSize = null;
 
                 @Override
                 protected void onPreExecute() {
@@ -163,7 +168,7 @@ public class acMeasurementThree extends AppCompatActivity {
                 @Override
                 protected Object doInBackground(Object[] params) {
                     if (isDataEnteredProper) {
-
+                        arrEstimatedSize = calculateSize();
                     }
                     return null;
                 }
@@ -182,12 +187,59 @@ public class acMeasurementThree extends AppCompatActivity {
                         i.putExtra(acMeasurementThree.STUDENT_LAST_NAME, edStudentLastName.getText().toString());
                         i.putExtra(acMeasurementThree.STUDENT_ROLL_NUMBER, edRollNumber.getText().toString());
                         i.putExtra(acMeasurementThree.CATEGORY_MASTER, (Category) spnCategory.getSelectedItem());
+                        i.putExtra(acMeasurementThree.ESTIMATED_SIZE_LIST, arrEstimatedSize);
                         startActivity(i);
                     }
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     };
+
+    private ArrayList<EstimatedSize> calculateSize() {
+        DataBase db = new DataBase(mContext);
+        db.open();
+        ArrayList<EstimatedSize> arrEstimatedSize = new ArrayList<>();
+        try {
+            for (int i = lyMeasurementParameter.getChildCount() - 1; i >= 0; i--) {
+                MaterialTextInputLayout lyed = (MaterialTextInputLayout) lyMeasurementParameter.getChildAt(i);
+                MaterialEditText ed = (MaterialEditText) ((FrameLayout) lyed.getChildAt(0)).getChildAt(0);
+                int type_id = Integer.parseInt(ed.getTag().toString());
+                String type_val = ed.getText().toString();
+                Cursor cur = db.fetch(DataBase.category_measurement_relation,
+                        "category_id=" + selectedCategoryId + " and (measurement_type_id=" + type_id + " and measurement_value>=" + type_val + ")", "measurement_value", "1");
+                try {
+                    if (cur != null && cur.getCount() > 0) {
+                        cur.moveToFirst();
+                        CategoryMeasurementRelation objCategoryMeasurementRelation = new CategoryMeasurementRelation(cur.getInt(1), cur.getInt(2), cur.getInt(3), cur.getInt(4), cur.getString(5), cur.getString(6));
+                        if (!ifSizeAlreadyAdded(arrEstimatedSize, objCategoryMeasurementRelation.getSize_id())) {
+                            arrEstimatedSize.add(new EstimatedSize(objCategoryMeasurementRelation.getSize_id(), objCategoryMeasurementRelation.getCategory_id(), objCategoryMeasurementRelation.getSize(), false));
+                            Logger.debug("category_id=" + selectedCategoryId + " and (measurement_type_id=" + type_id + " and measurement_value>=" + type_val + ")" + "    ::::    " + objCategoryMeasurementRelation.getSize_id());
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Logger.writeToCrashlytics(e);
+                } finally {
+                    cur.close();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.writeToCrashlytics(e);
+        } finally {
+            db.close();
+        }
+        return arrEstimatedSize;
+    }
+
+    private boolean ifSizeAlreadyAdded(ArrayList<EstimatedSize> arrEstimatedSize, int size_id) {
+        for (EstimatedSize s : arrEstimatedSize) {
+            if (s.getSize_id() == size_id) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -23,7 +23,6 @@ public class InputFilterMinMax implements InputFilter {
     @Override
     public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
         try {
-            Logger.debug((dest.toString() + source.toString()));
             Double input = Double.parseDouble(dest.toString() + source.toString());
             if (isInRange(min, max, input)) {
                 String strInput = String.valueOf(input);

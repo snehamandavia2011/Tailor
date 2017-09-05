@@ -67,7 +67,7 @@ public class DataBase {
             {"_ID", "id", "parent_id", "category_name", "category_description", "category_for", "image"},
             {"_ID", "id", "school_name", "address", "contact_no", "email"},
             {"_ID", "id", "class_name"},
-            {"_ID", "serverPK", "studFirstName", "studLastName", "studRollNumber", "school_id", "class_id", "age_group_id", "size_id", "category_id", "measurement_type_id", "default_value", "is_successfully_submitted", "employee_id", "datetime"}};
+            {"_ID", "serverPK", "studFirstName", "studLastName", "studRollNumber", "school_id", "class_id", "age_group_id", "size_id", "category_id", "is_successfully_submitted", "employee_id", "datetime"}};
 
     private static final String TABLE_0_CREATE = "create table "
             + age_group
@@ -102,8 +102,8 @@ public class DataBase {
             + student_measurement
             + "(_ID integer primary key autoincrement,serverPK text not null,studFirstName text not null," +
             "studLastName text not null,studRollNumber text not null,school_id text not null,class_id text not null," +
-            "age_group_id text not null,size_id text not null,category_id text not null,measurement_type_id text not null," +
-            "default_value text not null,is_successfully_submitted text not null,employee_id text not null,datetime text not null);";
+            "age_group_id text not null,size_id text not null,category_id text not null," +
+            "is_successfully_submitted text not null,employee_id text not null,datetime text not null);";
 
     public DataBase(Context ctx) {
         HCtx = ctx;
@@ -353,6 +353,16 @@ public class DataBase {
 
         Cursor ret = sqLiteDb.query(DATABASE_TABLE, null, where, null, null,
                 null, orderByval);
+        if (ret != null) {
+            ret.moveToFirst();
+        }
+        return ret;
+    }
+
+    public synchronized Cursor fetch(String DATABASE_TABLE, String where, String orderByval, String limit) throws SQLException {
+
+        Cursor ret = sqLiteDb.query(DATABASE_TABLE, null, where, null, null,
+                null, orderByval, limit);
         if (ret != null) {
             ret.moveToFirst();
         }
