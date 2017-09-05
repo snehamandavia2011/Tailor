@@ -194,7 +194,7 @@ public class acMeasurementFour extends AppCompatActivity {
                 String date = DateTimeUtils.getDate(new Date(cur.getLong(12)));
                 String time = DateTimeUtils.getTime(new Date(cur.getLong(12)));
                 String token = Helper.getStringPreference(mContext, User.Fields.TOKEN, "");
-                data = new String[]{String.valueOf(localDbPK), first_name, last_name, roll_number, school_id, class_id, age_group_id, size_id, category_id, user_id, date, time, token};
+                data = new String[]{first_name, last_name, roll_number, school_id, class_id, age_group_id, size_id, category_id, user_id, date, time, token};
             }
             if (data != null) {
                 final HttpEngine objHttpEngine = new HttpEngine();
