@@ -87,4 +87,5 @@
     <string name="strSubmitting">Submitting</string>
     <string name="strNoSizeFound">No relevant size found.</string>
     <string name="strSize">Size</string>
+    <string name="msgMeasurementDataSave">Measurement data saved on server.</string>
 </resources>

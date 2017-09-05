@@ -1,18 +1,25 @@
 package tailor.mafatlal.com.tailor;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import com.androidadvance.topsnackbar.TSnackbar;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,10 +32,15 @@ import entity.ClassMaster;
 import entity.EstimatedSize;
 import entity.SchoolMaster;
 import entity.User;
+import utility.ConstantVal;
 import utility.DataBase;
+import utility.DateTimeUtils;
 import utility.Helper;
+import utility.HttpEngine;
 import utility.Logger;
+import utility.ServerResponse;
 import utility.TabManager;
+import utility.URLMapping;
 
 public class acMeasurementFour extends AppCompatActivity {
     Helper objHelper = new Helper();
@@ -110,41 +122,102 @@ public class acMeasurementFour extends AppCompatActivity {
 
     private void saveDataToLocalDatabase() {
         new AsyncTask() {
+            long id;
+            ServerResponse sr;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                lySizeSubmitingScreen.setVisibility(View.VISIBLE);
+                lyMainScreen.setVisibility(View.GONE);
+            }
+
             @Override
             protected Object doInBackground(Object[] params) {
                 DataBase db = new DataBase(mContext);
                 db.open();
                 try {
-                    db.insert(DataBase.student_measurement, DataBase.student_measurement_int, new String[]{"0",
+                    id = db.insert(DataBase.student_measurement, DataBase.student_measurement_int, new String[]{"0",
                             studFirstName, studLastName, studRollNumber, String.valueOf(objSelectedSchoolMaster.getId()),
                             String.valueOf(objSelectedClassMaster.getId()), String.valueOf(objSelectedAgeGroup.getId()),
                             String.valueOf(arrEstimatedSize.get(selectedSizePosition).getSize_id()),
                             String.valueOf(objSelectedCategory.getId()), "N", Helper.getStringPreference(mContext,
-                            User.Fields.EMPLOYEE_ID, ""), String.valueOf(new Date().getTime())});
+                            User.Fields.ID, ""), String.valueOf(new Date().getTime())});
                 } catch (Exception e) {
                     e.printStackTrace();
                     Logger.writeToCrashlytics(e);
                 } finally {
                     db.close();
                 }
+                sr = saveDataOnServer(mContext, id);
                 return null;
             }
 
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                saveDataOnServer();
+                lySizeSubmitingScreen.setVisibility(View.GONE);
+                lyMainScreen.setVisibility(View.VISIBLE);
+                if (sr != null && sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SUCCESS)) {
+                    Helper.displaySnackbar(ac, mContext.getString(R.string.msgMeasurementDataSave), ConstantVal.ToastBGColor.SUCCESS).setCallback(new TSnackbar.Callback() {
+                        @Override
+                        public void onDismissed(TSnackbar snackbar, int event) {
+                            super.onDismissed(snackbar, event);
+                            setResult(ConstantVal.RESPONSE_MEASUREMENT_FOUR);
+                            finish();
+                        }
+                    });
+                } else {
+                    Helper.displaySnackbar(ac, ConstantVal.ServerResponseCode.getMessage(mContext, sr.getResponseCode()), ConstantVal.ToastBGColor.INFO);
+                }
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public static void saveDataOnServer() {
-        new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-                return null;
+    public static ServerResponse saveDataOnServer(Context mContext, long localDbPK) {
+        ServerResponse sr = null;
+        DataBase db = new DataBase(mContext);
+        db.open();
+        Cursor cur = db.fetch(DataBase.student_measurement, "_ID=" + localDbPK);
+        String[] data = null;
+        try {
+            if (cur != null && cur.getCount() > 0) {
+                String first_name = cur.getString(2);
+                String last_name = cur.getString(3);
+                String roll_number = cur.getString(4);
+                String school_id = cur.getString(5);
+                String class_id = cur.getString(6);
+                String age_group_id = cur.getString(7);
+                String size_id = cur.getString(8);
+                String category_id = cur.getString(9);
+                String user_id = cur.getString(11);
+                String date = DateTimeUtils.getDate(new Date(cur.getLong(12)));
+                String time = DateTimeUtils.getTime(new Date(cur.getLong(12)));
+                String token = Helper.getStringPreference(mContext, User.Fields.TOKEN, "");
+                data = new String[]{String.valueOf(localDbPK), first_name, last_name, roll_number, school_id, class_id, age_group_id, size_id, category_id, user_id, date, time, token};
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            if (data != null) {
+                final HttpEngine objHttpEngine = new HttpEngine();
+                URLMapping um = ConstantVal.saveStudentMeasurement();
+                sr = objHttpEngine.getDataFromWebAPI(mContext, um.getUrl(),
+                        um.getParamNames(), data);
+                if (sr != null && sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SUCCESS)) {
+                    JSONObject objJSON = new JSONObject(sr.getResponseString());
+                    String serverPK = objJSON.getString("serverPK");
+                    ContentValues cv = new ContentValues();
+                    cv.put("serverPK", serverPK);
+                    cv.put("is_successfully_submitted", "Y");
+                    db.update(DataBase.student_measurement, DataBase.student_measurement_int, "_ID=" + localDbPK, cv);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.writeToCrashlytics(e);
+        } finally {
+            cur.close();
+            db.close();
+        }
+        return sr;
     }
 
     @Override

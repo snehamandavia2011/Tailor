@@ -9,6 +9,8 @@ import tailor.mafatlal.com.tailor.R;
  */
 
 public class ConstantVal {
+    public static final int RESPONSE_MEASUREMENT_FOUR = 1;
+    public static final int REQUEST_MEASUREMENT_FOUR = 2;
 
     public static class Gender {
         public static final String MALE = "Male";
@@ -150,6 +152,12 @@ public class ConstantVal {
     public static URLMapping getClassName() {
         String[] paramNames = {"token"};
         String URL = getWebURLPrefix() + "Measurementmanager/getClassName";
+        return new URLMapping(paramNames, URL);
+    }
+
+    public static URLMapping saveStudentMeasurement() {
+        String[] paramNames = {"localDbPK", "first_name", "last_name", "roll_number", "school_id", "class_id", "age_group_id", "size_id", "category_id", "user_id", "date", "time","token"};
+        String URL = getWebURLPrefix() + "Measurementmanager/saveStudentMeasurement";
         return new URLMapping(paramNames, URL);
     }
 }

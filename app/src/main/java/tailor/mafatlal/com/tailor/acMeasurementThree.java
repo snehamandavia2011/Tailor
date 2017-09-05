@@ -33,6 +33,7 @@ import entity.MeasurementParameter;
 import entity.SchoolMaster;
 import me.zhanghai.android.materialedittext.MaterialEditText;
 import me.zhanghai.android.materialedittext.MaterialTextInputLayout;
+import utility.ConstantVal;
 import utility.DataBase;
 import utility.Helper;
 import utility.InputFilterMinMax;
@@ -188,7 +189,7 @@ public class acMeasurementThree extends AppCompatActivity {
                         i.putExtra(acMeasurementThree.STUDENT_ROLL_NUMBER, edRollNumber.getText().toString());
                         i.putExtra(acMeasurementThree.CATEGORY_MASTER, (Category) spnCategory.getSelectedItem());
                         i.putExtra(acMeasurementThree.ESTIMATED_SIZE_LIST, arrEstimatedSize);
-                        startActivity(i);
+                        startActivityForResult(i, ConstantVal.REQUEST_MEASUREMENT_FOUR);
                     }
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -247,6 +248,14 @@ public class acMeasurementThree extends AppCompatActivity {
             finish();
         }
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ConstantVal.REQUEST_MEASUREMENT_FOUR && resultCode == ConstantVal.RESPONSE_MEASUREMENT_FOUR) {
+            finish();
+        }
     }
 
     private void setMeasurementParameter(Category objCategory) {
