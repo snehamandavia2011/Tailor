@@ -92,4 +92,6 @@
     <string name="strTryAgain">TRY AGAIN</string>
     <string name="strSent">SENT</string>
     <string name="strFailed">FAILED</string>
+    <string name="strShowDetail">Show Detail</string>
+    <string name="strHideDetail">Hide Detail</string>
 </resources>

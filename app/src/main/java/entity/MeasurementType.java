@@ -1,10 +1,14 @@
 package entity;
 
+import android.content.Context;
+import android.database.Cursor;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import utility.DataBase;
 import utility.Logger;
 
 /**
@@ -53,5 +57,24 @@ public class MeasurementType {
             Logger.writeToCrashlytics(e);
             return null;
         }
+    }
+
+    public static MeasurementType getDataFromDatabase(Context mContext, int intTypeId) {
+        DataBase db = new DataBase(mContext);
+        db.open();
+        Cursor cur = db.fetch(DataBase.measurement_type, "id=" + intTypeId);
+        try {
+            if (cur != null && cur.getCount() > 0) {
+                cur.moveToFirst();
+                MeasurementType obj = new MeasurementType(cur.getInt(1), cur.getString(2));
+                return obj;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            cur.close();
+            db.close();
+        }
+        return null;
     }
 }
