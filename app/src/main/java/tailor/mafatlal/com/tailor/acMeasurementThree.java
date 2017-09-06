@@ -106,7 +106,7 @@ public class acMeasurementThree extends AppCompatActivity {
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                if (arrCategory != null && arrCategory.size() > 0) {
+                if (arrCategory != null) {
                     final ArrayAdapter<Category> adpCategory = new ArrayAdapter<Category>(mContext, R.layout.spinner_item_no_padding, arrCategory);
                     adpCategory.setDropDownViewResource(R.layout.spinner_item);
                     spnCategory.setAdapter(adpCategory);
@@ -211,9 +211,9 @@ public class acMeasurementThree extends AppCompatActivity {
                 try {
                     if (cur != null && cur.getCount() > 0) {
                         cur.moveToFirst();
-                        CategoryMeasurementRelation objCategoryMeasurementRelation = new CategoryMeasurementRelation(cur.getInt(1), cur.getInt(2), cur.getInt(3), cur.getInt(4), cur.getString(5), cur.getString(6));
-                        if (!ifSizeAlreadyAdded(arrEstimatedSize, objCategoryMeasurementRelation.getSize_id())) {
-                            arrEstimatedSize.add(new EstimatedSize(objCategoryMeasurementRelation.getSize_id(), objCategoryMeasurementRelation.getCategory_id(), objCategoryMeasurementRelation.getSize(), false));
+                        CategoryMeasurementRelation objCategoryMeasurementRelation = new CategoryMeasurementRelation(cur.getInt(1), cur.getInt(2), cur.getInt(3), cur.getInt(4), cur.getInt(5), cur.getString(6), cur.getString(7));
+                        if (!ifSizeAlreadyAdded(arrEstimatedSize, objCategoryMeasurementRelation.getSize_id(), objCategoryMeasurementRelation.getAge_group_id())) {
+                            arrEstimatedSize.add(new EstimatedSize(objCategoryMeasurementRelation.getSize_id(), objCategoryMeasurementRelation.getCategory_id(), objCategoryMeasurementRelation.getAge_group_id(), objCategoryMeasurementRelation.getSize(), false));
                             Logger.debug("category_id=" + selectedCategoryId + " and (measurement_type_id=" + type_id + " and measurement_value>=" + type_val + ")" + "    ::::    " + objCategoryMeasurementRelation.getSize_id());
                         }
                     }
@@ -233,9 +233,9 @@ public class acMeasurementThree extends AppCompatActivity {
         return arrEstimatedSize;
     }
 
-    private boolean ifSizeAlreadyAdded(ArrayList<EstimatedSize> arrEstimatedSize, int size_id) {
+    private boolean ifSizeAlreadyAdded(ArrayList<EstimatedSize> arrEstimatedSize, int size_id, int age_group_id) {
         for (EstimatedSize s : arrEstimatedSize) {
-            if (s.getSize_id() == size_id) {
+            if (s.getSize_id() == size_id && s.getAge_group_id() == age_group_id) {
                 return true;
             }
         }

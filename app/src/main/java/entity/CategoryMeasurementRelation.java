@@ -12,13 +12,14 @@ import utility.Logger;
  * Created by SAI on 9/3/2017.
  */
 
-public class CategoryMeasurementRelation{
-    private int id, category_id, measurement_type_id, size_id;
+public class CategoryMeasurementRelation {
+    private int id, category_id, age_group_id, measurement_type_id, size_id;
     private String size, measurement_value;
 
-    public CategoryMeasurementRelation(int id, int category_id, int measurement_type_id, int size_id, String size, String measurement_value) {
+    public CategoryMeasurementRelation(int id, int category_id, int age_group_id, int measurement_type_id, int size_id, String size, String measurement_value) {
         this.id = id;
         this.category_id = category_id;
+        this.age_group_id = age_group_id;
         this.measurement_type_id = measurement_type_id;
         this.size_id = size_id;
         this.size = size;
@@ -73,6 +74,14 @@ public class CategoryMeasurementRelation{
         this.size = size;
     }
 
+    public int getAge_group_id() {
+        return age_group_id;
+    }
+
+    public void setAge_group_id(int age_group_id) {
+        this.age_group_id = age_group_id;
+    }
+
     public static ArrayList<CategoryMeasurementRelation> parseJSON(String strJSON) {
         try {
             JSONArray arrJSON = new JSONArray(strJSON);
@@ -81,11 +90,12 @@ public class CategoryMeasurementRelation{
                 JSONObject objJSON = arrJSON.getJSONObject(i);
                 int id = objJSON.getString("id").equals("null") ? 0 : objJSON.getInt("id");
                 int category_id = objJSON.getString("category_id").equals("null") ? 0 : objJSON.getInt("category_id");
+                int age_group_id = objJSON.getString("age_group_id").equals("null") ? 0 : objJSON.getInt("age_group_id");
                 int measurement_type_id = objJSON.getString("measurement_type_id").equals("null") ? 0 : objJSON.getInt("measurement_type_id");
                 int size_id = objJSON.getString("size_id").equals("null") ? 0 : objJSON.getInt("size_id");
                 String size = objJSON.getString("size").equals("null") ? "" : objJSON.getString("size");
                 String measurement_value = objJSON.getString("measurement_value").equals("null") ? "" : objJSON.getString("measurement_value");
-                CategoryMeasurementRelation objCategoryMeasurementRelation = new CategoryMeasurementRelation(id, category_id, measurement_type_id, size_id, size, measurement_value);
+                CategoryMeasurementRelation objCategoryMeasurementRelation = new CategoryMeasurementRelation(id, category_id, age_group_id, measurement_type_id, size_id, size, measurement_value);
                 arrobjCategoryMeasurementRelation.add(objCategoryMeasurementRelation);
             }
             return arrobjCategoryMeasurementRelation;

@@ -4,21 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
+import adapter.StudentMeasurementAdapter;
 import entity.AgeGroup;
 import entity.ClassMaster;
 import entity.SchoolMaster;
+import entity.StudentMeasurement;
 import utility.Helper;
 import utility.TabManager;
 
@@ -33,7 +36,7 @@ public class acMeasurementTwo extends AppCompatActivity {
     SchoolMaster objSelectedSchoolMaster;
     ClassMaster objSelectedClassMaster;
     AgeGroup objSelectedAgeGroup;
-
+    ListView lvl;
     ImageButton btnEdit;
 
     @Override
@@ -49,11 +52,38 @@ public class acMeasurementTwo extends AppCompatActivity {
         setData();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initializeListView();
+    }
+
+    private void initializeListView() {
+        new AsyncTask() {
+            ArrayList<StudentMeasurement> arrStudentMeasurement = null;
+
+            @Override
+            protected Object doInBackground(Object[] params) {
+                arrStudentMeasurement = StudentMeasurement.getDataFromDatabase(mContext);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                if (arrStudentMeasurement != null && arrStudentMeasurement.size() > 0)
+                    lvl.setAdapter(new StudentMeasurementAdapter(arrStudentMeasurement, mContext));
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
     private void setData() {
         new AsyncTask() {
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                lvl = (ListView) findViewById(R.id.lvl);
                 btnEdit = (ImageButton) findViewById(R.id.btnEdit);
                 txtSchoolName = (TextView) findViewById(R.id.txtSchoolName);
                 txtClass = (TextView) findViewById(R.id.txtClass);
@@ -81,7 +111,6 @@ public class acMeasurementTwo extends AppCompatActivity {
                 txtClass.setText(mContext.getString(R.string.strClass) + ": " + objSelectedClassMaster.getClass_name());
                 txtSchoolName.setText(objSelectedSchoolMaster.getSchool_name());
                 txtAgegroup.setText(mContext.getString(R.string.strAgeGroup) + ": " + objSelectedAgeGroup.toString());
-
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

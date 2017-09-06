@@ -142,7 +142,7 @@ public class acMeasurementFour extends AppCompatActivity {
                             String.valueOf(objSelectedClassMaster.getId()), String.valueOf(objSelectedAgeGroup.getId()),
                             String.valueOf(arrEstimatedSize.get(selectedSizePosition).getSize_id()),
                             String.valueOf(objSelectedCategory.getId()), "N", Helper.getStringPreference(mContext,
-                            User.Fields.ID, ""), String.valueOf(new Date().getTime())});
+                            User.Fields.ID, ""), String.valueOf(new Date().getTime()), String.valueOf(arrEstimatedSize.get(selectedSizePosition).getSize())});
                 } catch (Exception e) {
                     e.printStackTrace();
                     Logger.writeToCrashlytics(e);
@@ -168,7 +168,14 @@ public class acMeasurementFour extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Helper.displaySnackbar(ac, ConstantVal.ServerResponseCode.getMessage(mContext, sr.getResponseCode()), ConstantVal.ToastBGColor.INFO);
+                    Helper.displaySnackbar(ac, ConstantVal.ServerResponseCode.getMessage(mContext, sr.getResponseCode()), ConstantVal.ToastBGColor.INFO).setCallback(new TSnackbar.Callback() {
+                        @Override
+                        public void onDismissed(TSnackbar snackbar, int event) {
+                            super.onDismissed(snackbar, event);
+                            setResult(ConstantVal.RESPONSE_MEASUREMENT_FOUR);
+                            finish();
+                        }
+                    });
                 }
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

@@ -16,7 +16,7 @@ import utility.Logger;
  * Created by SAI on 9/3/2017.
  */
 
-public class Category implements Serializable{
+public class Category implements Serializable {
     private int id, parent_id;
     private String category_name, category_description, category_for, image;
 
@@ -105,9 +105,8 @@ public class Category implements Serializable{
         DataBase db = new DataBase(mContext);
         db.open();
         Cursor cur = db.fetchAll(DataBase.category_master, DataBase.category_master_int);
-        ArrayList<Category> arrCategory = null;
+        ArrayList<Category> arrCategory = new ArrayList<>();
         try {
-            arrCategory = new ArrayList<>();
             if (cur != null && cur.getCount() > 0) {
                 cur.moveToFirst();
                 do {

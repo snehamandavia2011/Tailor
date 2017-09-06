@@ -162,8 +162,8 @@ public class loadData {
                         for (CategoryMeasurementRelation obj : arrCategoryMeasurementRelation) {
                             db.insert(DataBase.category_measurement_relation, DataBase.category_measurement_relation_int,
                                     new String[]{String.valueOf(obj.getId()), String.valueOf(obj.getCategory_id()),
-                                            String.valueOf(obj.getMeasurement_type_id()), String.valueOf(obj.getSize_id()),
-                                            obj.getSize(), obj.getMeasurement_value()});
+                                            String.valueOf(obj.getAge_group_id()), String.valueOf(obj.getMeasurement_type_id()),
+                                            String.valueOf(obj.getSize_id()), obj.getSize(), obj.getMeasurement_value()});
                         }
                         db.close();
                     }

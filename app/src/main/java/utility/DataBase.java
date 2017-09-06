@@ -63,11 +63,11 @@ public class DataBase {
 
     String[][] tables = new String[][]{{"_ID", "id", "from_age", "to_age"},
             {"_ID", "id", "type_name"},
-            {"_ID", "id", "category_id", "measurement_type_id", "size_id", "size", "measurement_value"},
+            {"_ID", "id", "category_id", "age_group_id", "measurement_type_id", "size_id", "size", "measurement_value"},
             {"_ID", "id", "parent_id", "category_name", "category_description", "category_for", "image"},
             {"_ID", "id", "school_name", "address", "contact_no", "email"},
             {"_ID", "id", "class_name"},
-            {"_ID", "serverPK", "studFirstName", "studLastName", "studRollNumber", "school_id", "class_id", "age_group_id", "size_id", "category_id", "is_successfully_submitted", "user_id", "datetime"}};
+            {"_ID", "serverPK", "studFirstName", "studLastName", "studRollNumber", "school_id", "class_id", "age_group_id", "size_id", "category_id", "is_successfully_submitted", "user_id", "datetime", "size"}};
 
     private static final String TABLE_0_CREATE = "create table "
             + age_group
@@ -81,7 +81,7 @@ public class DataBase {
 
     private static final String TABLE_2_CREATE = "create table "
             + category_measurement_relation
-            + "(_ID integer primary key autoincrement,id text not null,category_id text not null,measurement_type_id text not null,"
+            + "(_ID integer primary key autoincrement,id text not null,category_id text not null,age_group_id text not null,measurement_type_id text not null,"
             + "size_id text not null,size text not null,measurement_value text not null);";
 
     private static final String TABLE_3_CREATE = "create table "
@@ -103,7 +103,7 @@ public class DataBase {
             + "(_ID integer primary key autoincrement,serverPK text not null,studFirstName text not null," +
             "studLastName text not null,studRollNumber text not null,school_id text not null,class_id text not null," +
             "age_group_id text not null,size_id text not null,category_id text not null," +
-            "is_successfully_submitted text not null,user_id text not null,datetime text not null);";
+            "is_successfully_submitted text not null,user_id text not null,datetime text not null,size text not null);";
 
     public DataBase(Context ctx) {
         HCtx = ctx;

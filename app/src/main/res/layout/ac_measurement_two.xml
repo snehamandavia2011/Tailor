@@ -60,23 +60,20 @@
                             style="@style/stySubTitleBlackSingleLine"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/margin"
-                            android:text="Jivan" />
+                            android:layout_marginBottom="@dimen/margin" />
 
                         <TextView
                             android:id="@+id/txtClass"
                             style="@style/stySubTitleBlackSingleLine"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/margin"
-                            android:text="B" />
+                            android:layout_marginBottom="@dimen/margin" />
 
                         <TextView
                             android:id="@+id/txtAgegroup"
                             style="@style/stySubTitleBlackSingleLine"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="B" />
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -97,8 +94,8 @@
                 android:id="@+id/lvl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@color/red"
-                android:dividerHeight="1dp"></ListView>
+                android:divider="@color/transparent"
+                android:dividerHeight="3dp"></ListView>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

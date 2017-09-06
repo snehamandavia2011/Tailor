@@ -67,6 +67,7 @@
     <string name="strConfirmPassword">Confirm Password</string>
     <string name="strSchoolAndCLass">School &amp; Class</string>
     <string name="strSchoolName">School name</string>
+    <string name="strRollNumber">Roll number</string>
     <string name="msgEnterRollNumber">Enter roll number</string>
     <string name="msgSelectCategory">Select category</string>
     <string name="strCategory">Category</string>
@@ -88,4 +89,7 @@
     <string name="strNoSizeFound">No relevant size found.</string>
     <string name="strSize">Size</string>
     <string name="msgMeasurementDataSave">Measurement data saved on server.</string>
+    <string name="strTryAgain">TRY AGAIN</string>
+    <string name="strSent">SENT</string>
+    <string name="strFailed">FAILED</string>
 </resources>
