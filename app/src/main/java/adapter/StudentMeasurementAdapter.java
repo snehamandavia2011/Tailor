@@ -122,4 +122,14 @@ public class StudentMeasurementAdapter extends BaseAdapter {
         }
         return convertView;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return getCount();
+    }
 }

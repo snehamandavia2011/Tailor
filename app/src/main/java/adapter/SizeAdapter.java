@@ -98,7 +98,8 @@ public class SizeAdapter extends BaseAdapter {
                 mSelectedRB = (RadioButton) v;
             }
         });
-        addDetailToLinearLayout(holder.lyMeasurementDetail, objSize);
+        if (!objSize.isSizeDetailLoaded())
+            addDetailToLinearLayout(holder.lyMeasurementDetail, objSize);
         setTextForShowHideDetail(holder.lyMeasurementDetail, holder.txtShowHideDetail);
         holder.txtShowHideDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +158,7 @@ public class SizeAdapter extends BaseAdapter {
                             ly.addView(view);
                         }
                     }
+                    objSize.setSizeDetailLoaded(true);
                 }
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

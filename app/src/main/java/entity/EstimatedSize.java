@@ -10,6 +10,7 @@ public class EstimatedSize implements Serializable {
     int size_id, category_id, age_group_id;
     String size;
     boolean isSelected;
+    boolean isSizeDetailLoaded = false;
 
     public EstimatedSize(int size_id, int category_id, int age_group_id, String size, boolean isSelected) {
         this.size_id = size_id;
@@ -57,5 +58,13 @@ public class EstimatedSize implements Serializable {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public boolean isSizeDetailLoaded() {
+        return isSizeDetailLoaded;
+    }
+
+    public void setSizeDetailLoaded(boolean sizeDetailLoaded) {
+        isSizeDetailLoaded = sizeDetailLoaded;
     }
 }

@@ -150,7 +150,7 @@ public class StudentMeasurement {
         ArrayList<StudentMeasurement> arrStudentMeasurement = new ArrayList<>();
         DataBase db = new DataBase(mContext);
         db.open();
-        Cursor cur = db.fetch(DataBase.student_measurement, DataBase.student_measurement_int, "user_id=" + Helper.getStringPreference(mContext, User.Fields.ID, ""));
+        Cursor cur = db.fetch(DataBase.student_measurement, "user_id=" + Helper.getStringPreference(mContext, User.Fields.ID, ""),"datetime desc");
         try {
             if (cur != null && cur.getCount() > 0) {
                 cur.moveToFirst();

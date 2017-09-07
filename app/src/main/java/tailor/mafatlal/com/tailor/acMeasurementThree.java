@@ -206,8 +206,9 @@ public class acMeasurementThree extends AppCompatActivity {
                 MaterialEditText ed = (MaterialEditText) ((FrameLayout) lyed.getChildAt(0)).getChildAt(0);
                 int type_id = Integer.parseInt(ed.getTag().toString());
                 String type_val = ed.getText().toString();
+                String where = "category_id=" + selectedCategoryId + " and (measurement_type_id=" + type_id + " and measurement_value>=" + type_val + ")";
                 Cursor cur = db.fetch(DataBase.category_measurement_relation,
-                        "category_id=" + selectedCategoryId + " and (measurement_type_id=" + type_id + " and measurement_value>=" + type_val + ")", "measurement_value", "1");
+                        where, "measurement_value", "1");
                 try {
                     if (cur != null && cur.getCount() > 0) {
                         cur.moveToFirst();
