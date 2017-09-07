@@ -156,7 +156,8 @@ public class ConstantVal {
     }
 
     public static URLMapping saveStudentMeasurement() {
-        String[] paramNames = {"first_name", "last_name", "roll_number", "school_id", "class_id", "age_group_id", "size_id", "category_id", "user_id", "date", "time","token"};
+        String[] paramNames = {"first_name", "last_name", "roll_number", "school_id", "class_id",
+                "student_age_group_id","size_age_group_id", "size_id", "category_id", "user_id", "date", "time","token"};
         String URL = getWebURLPrefix() + "Measurementmanager/saveStudentMeasurement";
         return new URLMapping(paramNames, URL);
     }

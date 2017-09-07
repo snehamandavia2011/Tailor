@@ -67,7 +67,7 @@ public class DataBase {
             {"_ID", "id", "parent_id", "category_name", "category_description", "category_for", "image"},
             {"_ID", "id", "school_name", "address", "contact_no", "email"},
             {"_ID", "id", "class_name"},
-            {"_ID", "serverPK", "studFirstName", "studLastName", "studRollNumber", "school_id", "class_id", "age_group_id", "size_id", "category_id", "is_successfully_submitted", "user_id", "datetime", "size"}};
+            {"_ID", "serverPK", "studFirstName", "studLastName", "studRollNumber", "school_id", "class_id", "student_age_group_id", "size_age_group_id", "size_id", "category_id", "is_successfully_submitted", "user_id", "datetime", "size"}};
 
     private static final String TABLE_0_CREATE = "create table "
             + age_group
@@ -102,7 +102,7 @@ public class DataBase {
             + student_measurement
             + "(_ID integer primary key autoincrement,serverPK text not null,studFirstName text not null," +
             "studLastName text not null,studRollNumber text not null,school_id text not null,class_id text not null," +
-            "age_group_id text not null,size_id text not null,category_id text not null," +
+            "student_age_group_id text not null,size_age_group_id text not null,size_id text not null,category_id text not null," +
             "is_successfully_submitted text not null,user_id text not null,datetime text not null,size text not null);";
 
     public DataBase(Context ctx) {

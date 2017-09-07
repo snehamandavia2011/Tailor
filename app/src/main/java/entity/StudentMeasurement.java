@@ -15,9 +15,9 @@ import utility.Logger;
 
 public class StudentMeasurement {
     private int _ID;
-    private String serverPK, studFirstName, studLastName, studRollNumber, school_id, class_id, age_group_id, size_id, category_id, is_successfully_submitted, user_id, datetime, size;
+    private String serverPK, studFirstName, studLastName, studRollNumber, school_id, class_id, student_age_group_id, size_age_group_id, size_id, category_id, is_successfully_submitted, user_id, datetime, size;
 
-    public StudentMeasurement(int _ID, String serverPK, String studFirstName, String studLastName, String studRollNumber, String school_id, String class_id, String age_group_id, String size_id, String category_id, String is_successfully_submitted, String user_id, String datetime, String size) {
+    public StudentMeasurement(int _ID, String serverPK, String studFirstName, String studLastName, String studRollNumber, String school_id, String class_id, String student_age_group_id, String size_age_group_id, String size_id, String category_id, String is_successfully_submitted, String user_id, String datetime, String size) {
         this._ID = _ID;
         this.serverPK = serverPK;
         this.studFirstName = studFirstName;
@@ -25,7 +25,8 @@ public class StudentMeasurement {
         this.studRollNumber = studRollNumber;
         this.school_id = school_id;
         this.class_id = class_id;
-        this.age_group_id = age_group_id;
+        this.student_age_group_id = student_age_group_id;
+        this.size_age_group_id = size_age_group_id;
         this.size_id = size_id;
         this.category_id = category_id;
         this.is_successfully_submitted = is_successfully_submitted;
@@ -90,12 +91,20 @@ public class StudentMeasurement {
         this.class_id = class_id;
     }
 
-    public String getAge_group_id() {
-        return age_group_id;
+    public String getStudent_age_group_id() {
+        return student_age_group_id;
     }
 
-    public void setAge_group_id(String age_group_id) {
-        this.age_group_id = age_group_id;
+    public void setStudent_age_group_id(String student_age_group_id) {
+        this.student_age_group_id = student_age_group_id;
+    }
+
+    public String getSize_age_group_id() {
+        return size_age_group_id;
+    }
+
+    public void setSize_age_group_id(String size_age_group_id) {
+        this.size_age_group_id = size_age_group_id;
     }
 
     public String getSize_id() {
@@ -150,14 +159,14 @@ public class StudentMeasurement {
         ArrayList<StudentMeasurement> arrStudentMeasurement = new ArrayList<>();
         DataBase db = new DataBase(mContext);
         db.open();
-        Cursor cur = db.fetch(DataBase.student_measurement, "user_id=" + Helper.getStringPreference(mContext, User.Fields.ID, ""),"datetime desc");
+        Cursor cur = db.fetch(DataBase.student_measurement, "user_id=" + Helper.getStringPreference(mContext, User.Fields.ID, ""), "datetime desc");
         try {
             if (cur != null && cur.getCount() > 0) {
                 cur.moveToFirst();
                 do {
                     StudentMeasurement obj = new StudentMeasurement(cur.getInt(0), cur.getString(1), cur.getString(2),
                             cur.getString(3), cur.getString(4), cur.getString(5), cur.getString(6), cur.getString(7),
-                            cur.getString(8), cur.getString(9), cur.getString(10), cur.getString(11), cur.getString(12), cur.getString(13));
+                            cur.getString(8), cur.getString(9), cur.getString(10), cur.getString(11), cur.getString(12), cur.getString(13), cur.getString(14));
                     arrStudentMeasurement.add(obj);
                 } while (cur.moveToNext());
             }

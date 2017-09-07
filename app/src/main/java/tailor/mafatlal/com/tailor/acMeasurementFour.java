@@ -140,6 +140,7 @@ public class acMeasurementFour extends AppCompatActivity {
                     id = db.insert(DataBase.student_measurement, DataBase.student_measurement_int, new String[]{"0",
                             studFirstName, studLastName, studRollNumber, String.valueOf(objSelectedSchoolMaster.getId()),
                             String.valueOf(objSelectedClassMaster.getId()), String.valueOf(objSelectedAgeGroup.getId()),
+                            String.valueOf(arrEstimatedSize.get(selectedSizePosition).getAge_group_id()),
                             String.valueOf(arrEstimatedSize.get(selectedSizePosition).getSize_id()),
                             String.valueOf(objSelectedCategory.getId()), "N", Helper.getStringPreference(mContext,
                             User.Fields.ID, ""), String.valueOf(new Date().getTime()), String.valueOf(arrEstimatedSize.get(selectedSizePosition).getSize())});
@@ -194,14 +195,15 @@ public class acMeasurementFour extends AppCompatActivity {
                 String roll_number = cur.getString(4);
                 String school_id = cur.getString(5);
                 String class_id = cur.getString(6);
-                String age_group_id = cur.getString(7);
-                String size_id = cur.getString(8);
-                String category_id = cur.getString(9);
-                String user_id = cur.getString(11);
-                String date = DateTimeUtils.getDate(new Date(cur.getLong(12)));
-                String time = DateTimeUtils.getTime(new Date(cur.getLong(12)));
+                String student_age_group_id = cur.getString(7);
+                String size_age_group_id = cur.getString(8);
+                String size_id = cur.getString(9);
+                String category_id = cur.getString(10);
+                String user_id = cur.getString(12);
+                String date = DateTimeUtils.getDate(new Date(cur.getLong(13)));
+                String time = DateTimeUtils.getTime(new Date(cur.getLong(13)));
                 String token = Helper.getStringPreference(mContext, User.Fields.TOKEN, "");
-                data = new String[]{first_name, last_name, roll_number, school_id, class_id, age_group_id, size_id, category_id, user_id, date, time, token};
+                data = new String[]{first_name, last_name, roll_number, school_id, class_id, student_age_group_id, size_age_group_id, size_id, category_id, user_id, date, time, token};
             }
             if (data != null) {
                 final HttpEngine objHttpEngine = new HttpEngine();
