@@ -11,6 +11,9 @@ import tailor.mafatlal.com.tailor.R;
 public class ConstantVal {
     public static final int RESPONSE_MEASUREMENT_FOUR = 1;
     public static final int REQUEST_MEASUREMENT_FOUR = 2;
+    public static class BroadcastAction {
+        public static final String SESSION_EXPIRE = "jobio.io.SESSION_EXPIRE";
+    }
 
     public static class Gender {
         public static final String MALE = "Male";
@@ -74,7 +77,9 @@ public class ConstantVal {
 
     private static String getWebURLPrefix() {
         //return "https://stackio.co/mWebApi/v1/";
-        return "http://45.249.111.13/~glamourapp/mWebApi/v1/";
+        //return "http://45.249.111.13/~glamourapp/mWebApi/v1/";
+        //return "http://glamourmafatlal.in/mWebApi/v1/";
+        return "http://glamourmafatlal.in/mWebApi/v2/index.php/";
     }
 
     public static URLMapping employeeCredentialVerification() {
@@ -157,7 +162,7 @@ public class ConstantVal {
 
     public static URLMapping saveStudentMeasurement() {
         String[] paramNames = {"first_name", "last_name", "roll_number", "school_id", "class_id",
-                "student_age_group_id","size_age_group_id", "size_id", "category_id", "user_id", "date", "time","token"};
+                "student_age_group_id","size_age_group_id", "size_id", "category_id", "user_id", "date", "time","token","JSONStudMesurementData"};
         String URL = getWebURLPrefix() + "Measurementmanager/saveStudentMeasurement";
         return new URLMapping(paramNames, URL);
     }

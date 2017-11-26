@@ -1,7 +1,9 @@
 package utility;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,6 +41,7 @@ import java.util.regex.Pattern;
 import entity.User;
 import io.fabric.sdk.android.Fabric;
 import tailor.mafatlal.com.tailor.R;
+import tailor.mafatlal.com.tailor.acLogin;
 
 /**
  * Created by SAI on 8/2/2017.
@@ -203,15 +206,36 @@ public class Helper {
 
     public static TSnackbar displaySnackbar(final AppCompatActivity ac, final String result, int toastType) {
         final Context ctx = ac;
-        TSnackbar snackbar = TSnackbar
-                .make(ac.findViewById(android.R.id.content), ConstantVal.ServerResponseCode.getMessage(ctx, result), TSnackbar.LENGTH_LONG);
-        View snackbarView = snackbar.getView();
-        snackbarView.setBackgroundResource(toastType);
-        TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
-        textView.setTextColor(Color.WHITE);
-        textView.setMaxLines(3);
-        snackbar.show();
-        return snackbar;
+        if (result.equals(ConstantVal.ServerResponseCode.SESSION_EXPIRED)) {
+            //Logger.debug("displaySnackbar:" + new Date());
+            TSnackbar snackbar = TSnackbar.make(ac.findViewById(android.R.id.content), ConstantVal.ServerResponseCode.getMessage(ctx, result), TSnackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundResource(toastType);
+            TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.setCallback(new TSnackbar.Callback() {
+                @Override
+                public void onDismissed(TSnackbar snackbar, int event) {
+                    super.onDismissed(snackbar, event);
+                    //Logger.debug("displaySnackbar onDismissed:" + new Date());
+                    Intent i = new Intent(ac, acLogin.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    ac.startActivity(i);
+                }
+            });
+            snackbar.show();
+            return snackbar;
+        } else {
+            TSnackbar snackbar = TSnackbar
+                    .make(ac.findViewById(android.R.id.content), ConstantVal.ServerResponseCode.getMessage(ctx, result), TSnackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundResource(toastType);
+            TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            textView.setMaxLines(3);
+            snackbar.show();
+            return snackbar;
+        }
     }
 
     public static Bitmap convertBase64ImageToBitmap(String strBase64) {
@@ -258,4 +282,43 @@ public class Helper {
         int width = ac.getWindowManager().getDefaultDisplay().getWidth();
         return width;
     }
+
+    public static synchronized void logOutUser(Context mContext, boolean isNeedTosendBroadcast) {
+        if (!Helper.getStringPreference(mContext, User.Fields.TOKEN, "").equals("")) {
+            User.clearCache(mContext);
+            DataBase db = new DataBase(mContext);
+            db.open();
+            db.cleanWhileLogout();
+            db.close();
+            if (isNeedTosendBroadcast) {
+                Intent intent = new Intent();
+                intent.setAction(ConstantVal.BroadcastAction.SESSION_EXPIRE);
+                mContext.sendBroadcast(intent);
+            } else {
+                Intent i = new Intent((AppCompatActivity) mContext, acLogin.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mContext.startActivity(i);
+            }
+        }
+    }
+
+    private AppCompatActivity objAppCompatActivity;
+    private BroadcastReceiver objSessionTimeoutBroadcast = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Logger.debug("brdSessionTimeOut1:" + objAppCompatActivity.getLocalClassName());
+            Helper.displaySnackbar(objAppCompatActivity, ConstantVal.ServerResponseCode.SESSION_EXPIRED, ConstantVal.ToastBGColor.INFO);
+        }
+    };
+
+    public void registerSessionTimeoutBroadcast(final AppCompatActivity ac) {
+        objAppCompatActivity = ac;
+        objAppCompatActivity.registerReceiver(objSessionTimeoutBroadcast, new IntentFilter(ConstantVal.BroadcastAction.SESSION_EXPIRE));
+    }
+
+    public void unRegisterSesionTimeOutBroadcast(final AppCompatActivity ac) {
+        objAppCompatActivity = ac;
+        objAppCompatActivity.unregisterReceiver(objSessionTimeoutBroadcast);
+    }
+
 }

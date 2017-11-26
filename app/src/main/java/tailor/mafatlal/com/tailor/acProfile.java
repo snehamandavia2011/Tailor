@@ -353,13 +353,14 @@ public class acProfile extends AppCompatActivity implements View.OnClickListener
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                if (sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SUCCESS) || sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SESSION_EXPIRED)) {
-                    logOutUser();
-                } else {
+                if (sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SUCCESS)) {
+                    Helper.logOutUser(mContext, false);
+                } else if (!sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SESSION_EXPIRED)) {
                     Helper.displaySnackbar(ac, ConstantVal.ServerResponseCode.getMessage(mContext, sr.getResponseCode()), ConstantVal.ToastBGColor.INFO);
                     lyMainScreen.setVisibility(View.VISIBLE);
                     lyLogoutScreen.setVisibility(View.GONE);
                 }
+
             }
         }.execute();
     }
@@ -384,4 +385,15 @@ public class acProfile extends AppCompatActivity implements View.OnClickListener
         return false;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        objHelper.registerSessionTimeoutBroadcast(ac);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        objHelper.unRegisterSesionTimeOutBroadcast(ac);
+    }
 }

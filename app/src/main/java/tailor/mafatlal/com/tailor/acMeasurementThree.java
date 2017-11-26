@@ -29,6 +29,7 @@ import entity.Category;
 import entity.CategoryMeasurementRelation;
 import entity.ClassMaster;
 import entity.EstimatedSize;
+import entity.MeasurementData;
 import entity.MeasurementParameter;
 import entity.SchoolMaster;
 import me.zhanghai.android.materialedittext.MaterialEditText;
@@ -60,6 +61,8 @@ public class acMeasurementThree extends AppCompatActivity {
     public static final String STUDENT_ROLL_NUMBER = "stud_roll_number";
     public static final String CATEGORY_MASTER = "selected_category";
     public static final String ESTIMATED_SIZE_LIST = "estimated_size_list";
+    public static final String MEASUREMENT_DATA = "measurement_data";
+    ArrayList<MeasurementData> arrMeasurementData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +192,7 @@ public class acMeasurementThree extends AppCompatActivity {
                         i.putExtra(acMeasurementThree.STUDENT_ROLL_NUMBER, edRollNumber.getText().toString());
                         i.putExtra(acMeasurementThree.CATEGORY_MASTER, (Category) spnCategory.getSelectedItem());
                         i.putExtra(acMeasurementThree.ESTIMATED_SIZE_LIST, arrEstimatedSize);
+                        i.putExtra(acMeasurementThree.MEASUREMENT_DATA, arrMeasurementData);
                         startActivityForResult(i, ConstantVal.REQUEST_MEASUREMENT_FOUR);
                     }
                 }
@@ -200,12 +204,14 @@ public class acMeasurementThree extends AppCompatActivity {
         DataBase db = new DataBase(mContext);
         db.open();
         ArrayList<EstimatedSize> arrEstimatedSize = new ArrayList<>();
+        arrMeasurementData = new ArrayList<>();
         try {
             for (int i = lyMeasurementParameter.getChildCount() - 1; i >= 0; i--) {
                 MaterialTextInputLayout lyed = (MaterialTextInputLayout) lyMeasurementParameter.getChildAt(i);
                 MaterialEditText ed = (MaterialEditText) ((FrameLayout) lyed.getChildAt(0)).getChildAt(0);
                 int type_id = Integer.parseInt(ed.getTag().toString());
                 String type_val = ed.getText().toString();
+                arrMeasurementData.add(new MeasurementData(type_id, type_val));
                 String where = "category_id=" + selectedCategoryId + " and (measurement_type_id=" + type_id + " and measurement_value>=" + type_val + ")";
                 Cursor cur = db.fetch(DataBase.category_measurement_relation,
                         where, "measurement_value", "1");
@@ -315,5 +321,17 @@ public class acMeasurementThree extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        objHelper.registerSessionTimeoutBroadcast(ac);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        objHelper.unRegisterSesionTimeOutBroadcast(ac);
     }
 }

@@ -111,7 +111,7 @@ public class StudentMeasurementAdapter extends BaseAdapter {
                                         notifyDataSetChanged();
                                     }
                                 });
-                            } else {
+                            } else if (!sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SESSION_EXPIRED)) {
                                 Helper.displaySnackbar((AppCompatActivity) mContext, ConstantVal.ServerResponseCode.getMessage(mContext, sr.getResponseCode()), ConstantVal.ToastBGColor.INFO);
                             }
                         }

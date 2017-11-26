@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import entity.Category;
 import entity.CategoryMeasurementRelation;
 import entity.ClassMaster;
 import entity.EstimatedSize;
+import entity.MeasurementData;
 import entity.SchoolMaster;
 import entity.User;
 import utility.ConstantVal;
@@ -57,6 +59,7 @@ public class acMeasurementFour extends AppCompatActivity {
     Button btnSubmit;
     ListView lvlSize;
     public static int selectedSizePosition = 0;
+    ArrayList<MeasurementData> arrMeasurementData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,7 @@ public class acMeasurementFour extends AppCompatActivity {
                     studLastName = ac.getIntent().getStringExtra(acMeasurementThree.STUDENT_LAST_NAME);
                     studRollNumber = ac.getIntent().getStringExtra(acMeasurementThree.STUDENT_ROLL_NUMBER);
                     arrEstimatedSize = (ArrayList<EstimatedSize>) ac.getIntent().getSerializableExtra(acMeasurementThree.ESTIMATED_SIZE_LIST);
+                    arrMeasurementData = (ArrayList<MeasurementData>) ac.getIntent().getSerializableExtra(acMeasurementThree.MEASUREMENT_DATA);
                 }
             }
 
@@ -144,6 +148,10 @@ public class acMeasurementFour extends AppCompatActivity {
                             String.valueOf(arrEstimatedSize.get(selectedSizePosition).getSize_id()),
                             String.valueOf(objSelectedCategory.getId()), "N", Helper.getStringPreference(mContext,
                             User.Fields.ID, ""), String.valueOf(new Date().getTime()), String.valueOf(arrEstimatedSize.get(selectedSizePosition).getSize())});
+                    for (MeasurementData objMeasurementData : arrMeasurementData) {
+                        db.insert(DataBase.student_measurement_data, DataBase.student_measurement_data_int,
+                                new String[]{String.valueOf(id), String.valueOf(objMeasurementData.getMeasurement_type_id()), objMeasurementData.getMeasurement_value()});
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Logger.writeToCrashlytics(e);
@@ -168,7 +176,7 @@ public class acMeasurementFour extends AppCompatActivity {
                             finish();
                         }
                     });
-                } else {
+                } else if (!sr.getResponseCode().equals(ConstantVal.ServerResponseCode.SESSION_EXPIRED)) {
                     Helper.displaySnackbar(ac, ConstantVal.ServerResponseCode.getMessage(mContext, sr.getResponseCode()), ConstantVal.ToastBGColor.INFO).setCallback(new TSnackbar.Callback() {
                         @Override
                         public void onDismissed(TSnackbar snackbar, int event) {
@@ -180,6 +188,31 @@ public class acMeasurementFour extends AppCompatActivity {
                 }
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public static String getJSONStudMesurementData(Context mContext, long localDbPK) {
+        JSONArray arr = new JSONArray();
+        DataBase db = new DataBase(mContext);
+        db.open();
+        Cursor curMeasurementData = db.fetch(DataBase.student_measurement_data, "student_measurement_id=" + localDbPK);
+        try {
+            if (curMeasurementData != null && curMeasurementData.getCount() > 0) {
+                curMeasurementData.moveToFirst();
+                do {
+                    JSONObject obj = new JSONObject();
+                    obj.put("measurement_type_id", curMeasurementData.getInt(2));
+                    obj.put("measurement_value", curMeasurementData.getInt(3));
+                    arr.put(obj);
+                } while (curMeasurementData.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.writeToCrashlytics(e);
+        } finally {
+            curMeasurementData.close();
+            db.close();
+        }
+        return arr.toString();
     }
 
     public static ServerResponse saveDataOnServer(Context mContext, long localDbPK) {
@@ -203,7 +236,8 @@ public class acMeasurementFour extends AppCompatActivity {
                 String date = DateTimeUtils.getDate(new Date(cur.getLong(13)));
                 String time = DateTimeUtils.getTime(new Date(cur.getLong(13)));
                 String token = Helper.getStringPreference(mContext, User.Fields.TOKEN, "");
-                data = new String[]{first_name, last_name, roll_number, school_id, class_id, student_age_group_id, size_age_group_id, size_id, category_id, user_id, date, time, token};
+                String JSONStudMesurementData = getJSONStudMesurementData(mContext, localDbPK);
+                data = new String[]{first_name, last_name, roll_number, school_id, class_id, student_age_group_id, size_age_group_id, size_id, category_id, user_id, date, time, token, JSONStudMesurementData};
             }
             if (data != null) {
                 final HttpEngine objHttpEngine = new HttpEngine();
@@ -247,4 +281,15 @@ public class acMeasurementFour extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        objHelper.registerSessionTimeoutBroadcast(ac);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        objHelper.unRegisterSesionTimeOutBroadcast(ac);
+    }
 }

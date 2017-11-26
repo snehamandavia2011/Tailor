@@ -151,5 +151,15 @@ public class acMeasurementTwo extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        objHelper.registerSessionTimeoutBroadcast(ac);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        objHelper.unRegisterSesionTimeOutBroadcast(ac);
+    }
 }
